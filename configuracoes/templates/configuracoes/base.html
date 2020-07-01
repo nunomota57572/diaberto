@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<!--<title>{% block title %}{% endblock %}</title>-->
+{% load django_simple_bulma %}
+{% bulma %}
+{% font_awesome %}
+{% load bulma_tags %}
+{% load widget_tweaks %}
+<title>Dia Aberto</title>
+
+<link rel="icon" href="/static/icon.png" type="image/gif" sizes="16x16">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<link rel="stylesheet" href="https://cdn.rawgit.com/octoshrimpy/bulma-o-steps/master/bulma-steps.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+<style>
+#snackbar {
+  visibility: hidden;
+  min-width: 250px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 100px;
+  padding: 16px;
+  position: fixed;
+  z-index: 1;
+  right: 35%;
+  left: 35%;
+  font-size: 17px;
+  opacity: 0.8;
+}
+
+#snackbar.show {
+  visibility: visible;
+  -webkit-animation: fadein 0.5s, fadeout 0.5s 3.6s;
+  animation: fadein 0.5s, fadeout 0.5s 3.6s;
+}
+
+@-webkit-keyframes fadein {
+  from {opacity: 0;} 
+  to {opacity: 0.8;}
+}
+
+@keyframes fadein {
+  from {opacity: 0;}
+  to {opacity: 0.8;}
+}
+
+@-webkit-keyframes fadeout {
+  from {opacity: 0.8;} 
+  to {opacity: 0;}
+}
+
+@keyframes fadeout {
+  from {opacity: 0.8;}
+  to {opacity: 0;}
+}
+
+
+	html {
+	  height: 100%;
+	  box-sizing: border-box;
+	}
+
+	*,*:before,*:after {
+		box-sizing: inherit;
+	}
+
+	body {
+		background-image: linear-gradient(0deg, #eeeeff 47% , #3273dc 0%);
+		position: relative;
+		margin: 0;
+		padding-bottom: 3rem;
+		min-height: 100%;
+		font-family: "Helvetica Neue", Arial, sans-serif;
+	}
+
+	/*NAVBAR*/
+		.navbar{
+			background-color: white;
+		}
+		.navbar a {
+		
+		  float: left;
+		  display: block;
+		  color: #4a4a4a;
+		  text-align: center;
+		  padding: 14px 16px;
+		  text-decoration: none;
+		  font-size: 15px;
+		}
+	/*NAVBAR*/
+
+	/*MAIN*/
+		.error_message{
+			color: red;
+		}
+		th:hover{
+			border-bottom: 2px solid grey;
+		}
+		.form_head{
+			box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+			background: lightgrey;
+			padding: 5px;
+			border-radius: 5px 5px 0 0;
+			text-align: center;
+			font-size: 15px;
+			font-weight: bold;
+		}
+		.form_main{
+			box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+			background: white;
+			padding: 14px;
+			margin-bottom: 14px;
+			/*outline-style: solid;*/
+			border-radius: 0 0 5px 5px;
+			
+		}
+		.base{
+			margin: 4%;
+			margin-bottom: 4%;
+			bottom: 0px;
+			height: auto;
+			min-height: 70vh;
+			background-color: white;
+
+			display: -ms-flexbox; /* IE10 */
+			display: flex;
+			-ms-flex-wrap: wrap; /* IE10 */
+			flex-wrap: wrap;
+
+			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+		}
+
+		.side {
+			-ms-flex: 30%; /* IE10 */
+			flex: 30%;
+			/*background-color: #f1f1f1;*/
+			padding: 14px 16px;
+		}
+
+		/* Main column */
+		.main {   
+			-ms-flex: 70%; /* IE10 */
+			flex: 70%;
+			background-color: white;
+			padding: 20px;
+		}
+
+		.box{
+			margin-right: auto;
+			margin-left: auto;
+			padding: 14px 16px;
+			width: 50%;
+		}
+	/*MAIN*/
+
+	/*FOOTER*/
+		.footer{
+			position: absolute;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			padding: 1rem;
+			background-color: white;
+			text-align: center;
+		}
+	/*FOOTER*/
+	
+</style>
+
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-md">
+	<a style="height: 52px; padding: 12px;" href="/inicial"><img style="height: 28px" src="/static/pagina_inicial.png"></a>
+
+	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"><span class="navbar-toggler-icon"></span></button>
+
+	<div class="collapse navbar-collapse" id="navbarSupportedContent">
+		
+			{% include 'configuracoes/includes/navbar.html' %}
+	
+	</div>
+</nav>
+{% if messages %}
+    {% for message in messages %}
+    	<div id="snackbar">{{ message }}</div>
+    {% endfor %}
+{% endif %}
+
+<div class="base">
+	{% block content %}
+	{% endblock %}
+</div>
+
+<footer class="footer">
+	Dia Aberto
+</footer>
+
+<script>
+  var x = document.getElementById("snackbar");
+  x.className = "show";
+  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 4000);
+</script>
+
+<script type="type/javasript" href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js"></script>
+<script>
+
+	$("#bell a.dropdown-item").click(function(index,value){
+		sessionStorage.setItem("notif", $(this).attr("value"))
+	})
+
+	$(".box").click(function(index, value)
+	{
+	sessionStorage.setItem("notif", $(this).attr("id"))
+	$.ajax({
+	 url: getBaseUrl() + "notificacao/ajax/conteudo",
+	 data: {
+		 'id': $(this).attr("id")
+	 },
+	 success: function(data) {
+		 $("#conteudo").html(data); // replace the contents
+	 },
+	 });
+	})
+
+ function getBaseUrl() {
+ var pathArray = location.href.split('/');
+ var protocol = pathArray[0];
+ var host = pathArray[2];
+ var url = protocol + '//' + host + '/';
+ return url;
+ }
+</script>
+
+</body>
+
+
+</html>

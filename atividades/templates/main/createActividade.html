@@ -1,0 +1,133 @@
+{% extends 'configuracoes/base.html' %}
+
+{% block content %}
+
+<div class="main">
+    <nav class="breadcrumb" aria-label="breadcrumbs" style="background-color:#ffff">
+        <ul>
+            <li><a href="/inicial">Início</a></li>
+            <li><a href="/atividades">Atividades</a></li>
+            <li class="is-active"><a href="">{% if atividade.Nome_actividade %}Editar
+    {%else%}Adicionar {% endif %}Atividade</a></li>
+        </ul>
+    </nav>
+    <ul class="steps is-narrow is-medium is-centered has-content-centered">
+        <li class="steps-segment" style="text-align:center">
+            <a href="#" class="has-text-dark">
+                <span class="steps-marker">
+                    <span class="icon">
+                        <i class="far fa-id-card"></i>
+                    </span>
+                </span>
+                <div class="steps-content">
+                    <span class="step-title">{% if atividade.Nome_actividade %}Editar {%else%}Adicionar {% endif %}Atividade</span>
+                </div>
+            </a>
+        </li>
+    </ul>
+
+    <form method="POST">
+        {% csrf_token %}
+        <div class="column is-offset-3 is-6">
+            <div class="field"></div>
+                <label class="label">Nome</label>
+                {{form.Nome_actividade}}
+                <br>
+            <div class="field">
+                <label class="label">Tipo de atividade</label>
+                {{form.Tipodeatividade}}
+            </div>
+            <br>
+            <div class="block">
+                <div class="field">
+                    <label class="label" >Campus</label>
+                        {{form.Campus}}
+                </div>
+                <div class="field">
+                    <label class="label">Descrição da Atividade</label>
+                        {{form.Descrição}}
+                </div>
+            </div>
+            <ul class="steps is-narrow is-medium is-centered has-content-centered">
+                <li class="steps-segment" style="text-align:center">
+                    <a href="#" class="has-text-dark">
+                        <span class="steps-marker">
+                            <span class="icon">
+                                <i class="far fa-id-card"></i>
+                            </span>
+                        </span>
+                        <div class="steps-content">
+                            <span class="step-title">{% if sessao.id %}Editar {%else%}Adicionar {% endif %}Sessão</span>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+            <div class="column is-offset-3 is-6">
+                <div class="field"></div>
+                    <label class="label">Dia</label>
+                    {{sessao.Dia}}
+                    <br>
+                <div class="field">
+                    <label class="label">Inicio</label>
+                    {{sessao.Inicio}}
+                </div>
+                <br>
+                <div class="block">
+                    <div class="columns">
+                        <div class="column">
+                            <div class="field">
+                                <label class="label" style="text-align:left">Duraçao (minutos)</label>
+                                {{sessao.Duraçao}}
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="field">
+                                <label class="label" style="text-align:left">Vagas</label>
+                                {{sessao.Vagas}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Espaço</label>
+                            {{sessao.Espaço}}
+                    </div>
+                    <div class="field">
+                        <label class="label">Materiais</label>
+                            {{sessao.Materiais}}
+                    </div>
+                    <div class="field">
+                        <label class="label">Colaboradores</label>
+                            {{sessao.Colaboradores}}
+                    </div>
+                </div>
+
+            {% if form.errors %}
+            <div id="errors">
+                <div class="error_message">
+                    {{ form.non_field_errors }}
+                    <ul>
+                        {% for field in form %}
+                            {% if field.errors %}
+                                <li>{{ field.errors|striptags }}</li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>  
+        <br>
+        {% endif %}
+            <div class="field">
+                <div class="buttons is-centered">
+                    <a class="button is-medium is-link is-light is-danger" style="text-align:left;text-decoration:none"
+                        href="/atividades">Cancel</a>
+                    <button class="button is-medium is-link is-success" style="text-align:right"
+                        type="submit">Submit</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+{% endblock %}
+

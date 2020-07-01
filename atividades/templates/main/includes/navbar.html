@@ -1,0 +1,61 @@
+{% if user.is_authenticated %}
+{% if user.Estado == 1 %}
+{% if user.TipoUtilizador == "Administrador" %}
+<a href="/atividades">Atividades</a>
+<a href="/inscricoes">Inscrições</a>
+<a href="/transportes">Transportes</a>
+<a href="/almocos">Almoços</a>
+<a href="/configuracao">Configuração do Dia Aberto</a>
+<div style="float: right;">
+<a href="/notificações">Notificações</a>
+<a href="/utilizador/util">Utilizadores</a>
+<a href="/utilizador/util/{{user.id}}">{{user.username}}</a>
+<a href="/utilizador/logout">Logout</a>
+</div>
+{% elif user.TipoUtilizador == "Coordenador" %}
+<a href="/departamentoatividades">Atividades do Departamento</a>
+<a href="/inscricoes">Inscrições</a>
+<a href="/colaboradores">Colaboradores</a>
+<a href="/tarefas">Tarefas</a>
+<div style="float: right;">
+<a href="/notificações">Notificações</a>
+<a href="/utilizador/util">Utilizadores</a>
+<a href="/utilizador/util/{{user.id}}">{{user.username}}</a>
+<a href="/utilizador/logout">Logout</a>
+</div>
+{% elif user.TipoUtilizador == "Colaborador" %}
+<a href="/tarefas/">Tarefas Associadas</a>
+<a href="/tarefas/disponibilidades">Disponibilidades</a>
+<div style="float: right;">
+<a href="/notificações">Notificações</a>
+<a href="/utilizador/util/{{user.id}}">{{user.username}}</a>
+<a href="/utilizador/logout">Logout</a>
+</div>
+{% elif user.TipoUtilizador == "Professor Universitario" %}
+<a href="/atividades/">Minhas Atividades</a>
+<div style="float: right;">
+    <a href="/notificações">Notificações</a>
+    <a href="/utilizador/util/{{user.id}}">{{user.username}}</a>
+    <a href="/utilizador/logout">Logout</a>
+</div>
+{% else %}
+<div style="float: right;">
+<a href="/notificacoes">Notificações</a>
+<a href="/utilizador/util/{{user.id}}">{{user.username}}</a>
+<a href="/utilizador/logout">Logout</a>
+</div>
+{% endif %}
+{% else %}
+Esta Conta está por validar
+<div style="float: right;">
+<a href="/notificações">Notificações</a>
+<a href="/utilizador/util/{{user.id}}">{{user.username}}</a>
+<a href="/utilizador/logout">Logout</a>
+</div>
+{% endif %}
+{% else %}
+<div style="float: right;">
+<a href="/utilizador/login">Login</a>
+<a href="/utilizador/register">Register</a>
+</div>
+{% endif %}

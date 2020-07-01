@@ -1,0 +1,1 @@
+web: gunicorn Projeto_Dia_Aberto.wsgi

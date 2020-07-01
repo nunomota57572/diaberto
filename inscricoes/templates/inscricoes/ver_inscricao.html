@@ -1,0 +1,101 @@
+{% extends 'configuracoes/base.html' %}
+{% load widget_tweaks %}
+{% block content %}
+
+<div class="main">
+    <nav class="breadcrumb" aria-label="breadcrumbs" style="background-color:#ffff">
+          <ul>
+              <li><a href="/inicial">Início</a></li>
+              <li><a href="../">Inscrições</a></li>
+              <li class="is-active"><a href="">{{inscricao.Nome}}</a></li>
+          </ul>
+      </nav>
+    <div class="box">
+      <center>
+        <h2>Detalhes da Incrição</h2>
+      </center>
+      <hr>
+      <div class="form-row">
+        <div class="form-group col-md-4">
+          <label>Nome</label><br>
+          {{inscricao.Nome}}
+        </div>
+        <div class="form-group col-md-4">
+          <label>Tipo de Visitante</label><br>
+          {{inscricao.Tipo_de_Visitante}}
+        </div>
+        <div class="form-group col-md-4">
+          <label>Numero de Pessoas</label><br>
+          {{inscricao.Nr_Pessoas}}
+        </div>
+        
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col-md-4">
+          <label>Escola</label><br>
+          {{inscricao.Escola}}
+        </div>
+        <div class="form-group col-md-4">
+          <label>Precisa de Transporte</label><br>
+          {{inscricao.Precisa_Transporte}}
+        </div>
+      </div>
+      
+  
+      <div class="form-row">
+        <div class="form-group col-md-4">
+          <label>Data do Dia Aberto</label><br>
+          {{inscricao.data}}
+        </div>
+        <div class="form-group col-md-4">
+          <label>Horario de Inicio </label><br>
+          {{inscricao.HorarioInicio}}
+        </div>
+        <div class="form-group col-md-4">
+          <label>Horario de Fim</label><br>
+          {{inscricao.HorarioFim}}
+        </div>
+      </div>
+  
+      <div class="form-row">
+        
+        <div class="form-group col-md-4">
+          <label>Refeicao</label><br>
+          {{inscricao.Refeicao}}
+        </div>
+        <div style="word-break: break-word" class="form-group col-md-4">
+          <label>Nr. Menus Alunos</label><br>
+          {{inscricao.Quantos_Alunos}}
+        </div>
+        <div style="word-break: break-word" class="form-group col-md-4">
+          <label>Nr. Menu Professores</label><br>
+          {{inscricao.Quantos_Professores}}
+        </div>
+      </div>
+
+      <center>
+        <li class="dropdown">
+          <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown"><label>Actividades Inscritas</label></a>
+          <div class="dropdown-menu" arial-labelleby="navbarDropdown">
+            <div class="dropdown-content">
+              {% for s in sess %}
+              <a class="dropdown-item" href="../ver_atividadeind/{{s.sessao.Atividade.id}}" style="text-align: center;">{{s.sessao.Atividade.Nome_actividade}}</a>
+              {% endfor %}
+            </div>
+          </div>
+        </li></center>
+      
+  
+          <center>
+            {% if user.is_authenticated and user.TipoUtilizador == 'Coordenador' or user.is_authenticated and user.TipoUtilizador == 'Administrador'%}
+            <a href="/inscricoes/inscricao" class="button is-info" type="button"
+              style="margin-bottom: 14px; margin-right: 20px; text-decoration:none">
+              </span>
+              <span>Voltar</span></a>
+            {% endif %}
+          </center>
+    </div>
+  </div>
+
+  {% endblock %}

@@ -1,0 +1,132 @@
+{% extends 'configuracoes/base.html' %}
+{% load widget_tweaks %}
+{% block content %}
+
+{% if user.TipoUtilizador == "Participante" %}
+    <div class="side">
+        <aside class="menu">
+            <p class="menu-label">
+                <h5>Filtros Inscrições</h5>
+            </p>
+
+            <p class="menu-label"> FILTROS NOME </p>
+            <form method="get">
+            <div class="field">
+                <p class="control has-icons-left">
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-search"></i>
+                    </span>
+                    {% render_field myFilter.form.Nome_actividade class="input" id="myInput" type="search" %}
+                </p>
+            </div>
+
+            <p class="menu-label"> FILTROS UNIDADE ORGANICA </p>
+            <div class="field">
+                <p class="control has-icons-left">
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-search"></i>
+                    </span>
+                    {% render_field myFilter.form.EntidadeOrganizacional class="input" id="myInput" type="search" %}
+                </p>
+            </div>
+
+            <p class="menu-label"> FILTROS DEPARTAMENTO </p>
+            <div class="field">
+                <p class="control has-icons-left">
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-search"></i>
+                    </span>
+                    {% render_field myFilter.form.Departamento class="input" id="myInput" type="search" %}
+                </p>
+            </div>
+
+            <p class="menu-label"> FILTROS CAMPUS </p>
+            <div class="field">
+                <p class="control has-icons-left">
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-search"></i>
+                    </span>
+                    {% render_field myFilter.form.Campus class="input" id="myInput" type="search" %}
+                </p>
+            </div>
+
+            <p class="menu-label"> FILTROS TIPO DE ATIVIDADE </p>
+            <div class="field">
+                <p class="control has-icons-left">
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-search"></i>
+                    </span>
+                    {% render_field myFilter.form.Tipodeatividade class="input" id="myInput" type="search" %}
+                </p>
+            </div>
+
+            <br>
+            <button type="submit" class="btn btn-primary">
+            <span class="glyphicon glyphicon-search"></span> Procurar
+            </button>
+            </form>
+        </aside>
+    </div>
+{% endif %}
+
+<div class="main">
+    <nav class="breadcrumb" aria-label="breadcrumbs" style="background-color:#ffff">
+        <ul>
+            <li><a href="/inicial">Início</a></li>
+            <li><a href="/inscricoes/inscricao">Inscrições</a></li>
+            <li class="is-active"><a href="">Selecionar atividades</a></li>
+        </ul>
+    </nav>
+    <h1 class="title" style="text-align:center">Adicionar Atividades</h1>
+        <form method = "POST">
+            {% csrf_token %}
+            <div class="row">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th><center>Nome da Atividade</center></th>
+                            <th><center>Horário de Inicio</center></th>
+                            <th><center>Duração da Atividade</center></th>
+                            <th><center>Vagas</center></th>
+                        </tr>
+
+                        {% for s in myFilter.qs %}
+                            {% if s.Atividade.Estado == 'Aceite' %}
+                                <tr>
+                                    <th>{% if s.Atividade %}
+                                        <center><a href="../ver_atividadeind/{{s.Atividade.id}}" , class="hoverable" style="color:blue">{{s.Atividade}}</a></center>
+                                        {% else %}
+                                        <center>------</center>
+                                        {% endif %}</th>
+                                    <th>{% if s.Inicio %}
+                                        <center>{{s.Inicio}}</center>
+                                        {% else %}
+                                        <center>------</center>
+                                        {% endif %}</th>
+                                    <th>{% if s.Duraçao %}
+                                        <center>{{s.Duraçao}}</center>
+                                        {% else %}
+                                        <center>------</center>
+                                        {% endif %}</th>
+                                    <th>{% if s.Vagas %}
+                                        <center>{{s.Vagas}}</center>
+                                        {% else %}
+                                        <center>------</center>
+                                        {% endif %}</th>
+                                    <th>
+                                        <label class="checkbox">
+                                        <input type="checkbox" name="sessao" value = "{{s.id}}">
+                                        </label>
+                                    </th>
+                                </tr>
+                            {%endif%}
+                        {%endfor%}
+                    </thead>
+                </table>
+            </div>
+            <center><a button class="button is-medium is-link " style="text-align:right" type="button" href="/inscricoes/inscricao">Voltar</button></a>
+                <button class="button is-medium is-link is-success" style="text-align:right" type="submit">Adicionar</button></center>
+        </form>
+</div>
+
+{% endblock %}

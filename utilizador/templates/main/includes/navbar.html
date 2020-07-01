@@ -1,0 +1,27 @@
+        {% if user.is_authenticated %}
+                {% if user.TipoUtilizador == "Administrador" %}
+                        <li><a href="/atividades">Atividades</a></li>
+                        <li><a href="/inscricoes">Inscrições</a></li>
+                        <li><a href="/transportes">Transportes</a></li>
+                        <li><a href="/almocos">Almoços</a></li>
+                        <li><a href="/configuracao">Configuração do Dia Aberto</a></li>
+                        <li><a href="/util">Notificações</a></li>
+                        <li><a href="/conta">{{user.username}}</a></li>
+                        <li><a href="/logout">Logout</a></li>
+                {% elif user.TipoUtilizador == "Coordenador" %}
+                        <li><a href="/departamentoatividades">Atividades do Departamento</a></li>
+                        <li><a href="/inscricoes">Inscrições</a></li>
+                        <li><a href="/colaboradores">Colaboradores</a></li>
+                        <li><a href="/tarefas">Tarefas</a></li>
+                        <li><a href="/util">Notificações</a></li>
+                        <li><a href="/conta">{{user.username}}</a></li>
+                        <li><a href="/logout">Logout</a></li>
+                {% else %}
+                        <li><a href="/">Notificações</a></li>
+                        <li><a href="/conta">{{user.username}}</a></li>
+                        <li><a href="/logout">Logout</a></li>
+                {% endif %}
+        {% else %}
+            <li><a href="/login">Login</a></li>
+            <li><a href="/register">Register</a></li>
+        {% endif %}

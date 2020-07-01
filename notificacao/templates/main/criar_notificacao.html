@@ -1,0 +1,21 @@
+{% extends 'configuracoes/base.html' %}
+
+{% block content %}
+    <nav class="breadcrumb" aria-label="breadcrumbs" style="background-color:#ffff">
+        <ul>
+            <li><a href="/inicial">Início</a></li>
+            <li><a href="../">Notificações</a></li>
+            <li class="is-active"><a href="">Criar notificação</a></li>
+        </ul>
+    </nav>
+        <div class="box" style='width:85%' >
+    <form method="POST">
+        {% csrf_token %}  
+        {{notificacao_form.as_p}}
+        <a href="../" class="button is-medium is-link" style="text-align:right">Voltar</a>
+        <button class="button is-medium is-link is-success" style="text-align:right"type="submit">Enviar</button>
+    </form>
+    
+    </div>
+</div>
+{% endblock %}

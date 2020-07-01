@@ -1,0 +1,295 @@
+{% extends 'configuracoes/base.html' %}
+{% block content %}
+
+
+<!--
+{{ins.nome}}
+{{ins.dias}}
+{{ins.necessitaTransporte}}
+{{ins.horaInicio}}
+{{ins.horaFim}}
+{{ins.entreCampus}}
+{{ins.nParticipantes}}
+
+{{ai.nome}}
+{{ai.atividade}}
+{{ai.sessao.tempo}}
+
+{{a.nome}}
+{{a.campus}}
+{{a.vagas}}
+
+{{a.nome}}
+{{a.campus}}
+{{a.vagas}}-->
+
+<div class="main">
+    <nav class="breadcrumb" aria-label="breadcrumbs" style="background-color:#ffff">
+        <ul>
+            <li><a href="/inicial">Início</a></li>
+            <li><a href="../">Percursos</a></li>
+            <li class="is-active"><a href="">Atribuir percurso {{percurso.origem}}-{{percurso.destino}}</a></li>
+        </ul>
+    </nav>
+
+    <h1 class="title" style="text-align:center">Percurso {{percurso.origem}}-{{percurso.destino}}</h1>
+<h3 style="text-align:center">{{percurso.dias}} &nbsp&nbsp {{percurso.horario}} &nbsp&nbsp Lotação: {{percurso.lotacao}} / {{autocarro.capacidade}}</h3>
+
+<h1 class="title" style="text-align:center">Inscrições</h1>
+
+<table class="table" id="mytable">
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Dias</th>
+            <th>Hora início</th>
+            <th>Hora fim</th>
+            <th>Nº participantes</th>
+            <td><b>Ações</b></td>
+        </tr>
+    </thead>
+    <tbody>
+    {% for a in atividade  %}
+        {% for ai in atividade_inscrita  %}
+            {% if ai.atividade.nome == a.nome %}
+                {% for ins in inscricao %}
+                    {% if ai.nome.nome == ins.nome %}
+                        {% if percurso.destino == a.campus %}
+                            {% if ai.sessao.tempo.tempo >= percurso.horario.tempo %}
+                                <tr>
+                                    <td>{{ins.nome}}</td>
+                                    <td>{{ins.dias}}</td>
+                                    <td>{{ins.horaInicio}}</td>
+                                    <td>{{ins.horaFim}}</td>
+                                    <td>{{ins.nParticipantes}}</td>
+                                    <td><a style="button" href="./{{ins.id}}">Adicionar</a></td>
+                                </tr>
+                            {% endif %}
+                        {% endif %}
+
+                        {% if percurso.origem == a.campus %}
+                            {% if ai.sessao.tempo.tempo <= percurso.horario.tempo %}
+                                    <tr>
+                                        <td>{{ins.nome}}</td>
+                                        <td>{{ins.dias}}</td>
+                                        <td>{{ins.horaInicio}}</td>
+                                        <td>{{ins.horaFim}}</td>
+                                        <td>{{ins.nParticipantes}}</td>
+                                        <td><a style="button" href="./{{ins.id}}">Adicionar</a></td>
+                                    </tr>
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+    </tbody>
+</table>
+
+<!--
+    <table>
+        <tr>
+            <th>Percurso</th>
+        </tr>
+        <tr>
+            <th>Autocarro</th>
+            <th>Data</th>
+            <th>Origem</th>
+            <th>Destino</th>
+            <th>Horario</th>
+            <th>Lotação</th>
+            <th>Autocarro</th>
+            <th>Capacidade</th>
+        </tr>
+        <tr>
+            <td>{{percurso.identificador}}</td>
+            <td>{{percurso.dias}}</td>
+            <td>{{percurso.origem}}</td>
+            <td>{{percurso.destino}}</td>
+            <td>{{percurso.horario}}</td>
+            <td>{{percurso.lotacao}}</td>
+            <td>{{autocarro.identificador}}</td>
+            <td>{{autocarro.capacidade}}</td>
+        </tr>
+    </table>
+    <table>
+        <tr>
+            <th>Inscrições</th>
+        </tr>
+        <tr>
+            <th>Nome</th>
+            <th>Dias</th>
+            <th>Necessita transporte</th>
+            <th>Hora Início</th>
+            <th>Hora Fim</th>
+            <th>Entre campus</th>
+            <th>Nº Participantes</th>
+        </tr>
+        {% for ins in inscricao %}
+            <tr>
+                <td>{{ins.nome}}</td>
+                <td>{{ins.dias}}</td>
+                <td>{{ins.necessitaTransporte}}</td>
+                <td>{{ins.horaInicio}}</td>
+                <td>{{ins.horaFim}}</td>
+                <td>{{ins.entreCampus}}</td>
+                <td>{{ins.nParticipantes}}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    <table>
+        <tr>
+            <th>Atividades inscritas</th>
+        </tr>
+        <tr>
+            <th>Inscrito</th>
+            <td></td>
+            <th>Atividade</th>
+            <th>Sessão</th>
+        </tr>
+        {% for ai in atividade_inscrita %}
+            <tr>
+                <td>{{ai.nome}}</td>
+                <td></td>
+                <td>{{ai.atividade}}</td>
+                <td>{{ai.sessao.tempo}}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    <table>
+        <tr>
+            <th>Atividades</th>
+        </tr>
+        <tr>
+            <th>Nome</th>
+            <th>Campus</th>
+            <th>Vagas</th>
+        </tr>
+        {% for a in atividade %}
+            <tr>
+                <td>{{a.nome}}</td>
+                <td>{{a.campus}}</td>
+                <td>{{a.vagas}}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    <table>
+        <tr>
+            <th>Sessões</th>
+        </tr>
+        <tr>
+            <th>Atividade</th>
+            <th>Tempo</th>
+        </tr>
+        {% for s in sessao %}
+            <tr>
+                <td>{{s.atividade}}</td>
+                <td>{{s.tempo}}</td>
+            </tr>
+        {% endfor %}
+    </table>
+-->
+</div>
+
+<!-- 
+<script>
+    var myArray = [
+        {% for a in atividade  %}
+            {% for ai in atividade_inscrita  %}
+                {% if ai.atividade.nome == a.nome %}
+                    {% for ins in inscricao %}
+                        {% if ai.nome.nome == ins.nome %}
+                            {% if percurso.destino == a.campus %}
+                                {% if ai.sessao.tempo.tempo >= percurso.horario.tempo %}
+                                    {'nome':'{{ins.nome}}','dias':'{{ins.dias}}','horaInicio':'{{ins.horaInicio}}','horaFim':'{{ins.horaFim}}','nParticipantes':'{{ins.nParticipantes}}',},
+                                {% endif %}
+                            {% endif %}
+
+                            {% if percurso.origem == a.campus %}
+                                {% if ai.sessao.tempo.tempo <= percurso.horario.tempo %}
+                                    {'nome':'{{ins.nome}}','dias':'{{ins.dias}}','horaInicio':'{{ins.horaInicio}}','horaFim':'{{ins.horaFim}}','nParticipantes':'{{ins.nParticipantes}}',},
+                                {% endif %}
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+    ]
+
+    $('th').on('click', function(){
+        var column = $(this).data('column')
+        var order = $(this).data('order')
+        var text = $(this).html()
+        text = text.substring(0, text.length - 1)
+
+        if(order == 'desc'){
+            $(this).data('order', "asc")
+            myArray = myArray.sort((a,b) => a[column] > b[column] ? 1 : -1)
+            text += '&#9660'
+        }else{
+            $(this).data('order', "desc")
+            myArray = myArray.sort((a,b) => a[column] < b[column] ? 1 : -1)
+            text += '&#9650'
+        }
+        $(this).html(text)
+        buildTable(myArray)
+    })
+
+    buildTable(myArray)
+
+    function buildTable(data){
+        var table = document.getElementById('myTable')
+        table.innerHTML = ''
+        for (var i = 0; i < data.length; i++){
+            var row = `<tr>
+                            <td>${data[i].nome}</td>
+                            <td>${data[i].dias}</a></td>
+                            <td>${data[i].horaInicio}</td>
+                            <td>${data[i].horaFim}</td>
+                            <td>${data[i].nParticipantes}</td>
+                            <td>
+                                Adicionar
+                            </td>
+                      </tr>`
+            table.innerHTML += row
+        }
+    }
+</script>
+    {% for a in atividade  %}
+        {% for ai in atividade_inscrita  %}
+            {% if ai.atividade.nome == a.nome %}
+                {% for ins in inscricao %}
+                    {% if ai.nome.nome == ins.nome %}
+                        {% if percurso.destino == a.campus %}
+                            {% if ai.sessao.tempo.tempo >= percurso.horario.tempo %}
+                                <tr>
+                                    <td>{{ins.nome}}</td>
+                                    <td>{{ins.dias}}</td>
+                                    <td>{{ins.horaInicio}}</td>
+                                    <td>{{ins.horaFim}}</td>
+                                    <td>{{ins.nParticipantes}}</td>
+                                </tr>
+                            {% endif %}
+                        {% endif %}
+
+                        {% if percurso.origem == a.campus %}
+                            {% if ai.sessao.tempo.tempo <= percurso.horario.tempo %}
+                                    <tr>
+                                        <td>{{ins.nome}}</td>
+                                        <td>{{ins.dias}}</td>
+                                        <td>{{ins.horaInicio}}</td>
+                                        <td>{{ins.horaFim}}</td>
+                                        <td>{{ins.nParticipantes}}</td>
+                                    </tr>
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+-->
+
+{% endblock %}

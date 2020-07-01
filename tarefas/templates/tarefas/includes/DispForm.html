@@ -1,0 +1,31 @@
+        <div class="error_message" style="color: #ff0000; text-align: center">{{ form.non_field_errors }}</div>
+        <br>
+        <div class="form-row">
+            <label for="descrição">Dia <span style="color: #ff0000">*</span></label>
+            {{form.Dia}}
+        </div>
+        <br>
+        <div class="columns">
+          <div class="column">
+            <div class="field">
+              <label for="dataDiaAbertoInicio">Início <span style="color: #ff0000">*</span></label>
+              <div class="control">
+                {{ form.Inicio }}
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field">
+              <label for="dataDiaAbertoFim">Fim <span style="color: #ff0000">*</span></label>
+              <div class="control">
+                {{ form.Fim }}
+              </div>
+            </div>
+          </div>
+        </div>
+        <br>
+        <div class="form-row">
+            <label for="descrição">Observações</label>
+            {{form.Observacoes}}
+        </div>
+        <br>

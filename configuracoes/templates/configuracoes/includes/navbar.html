@@ -1,0 +1,287 @@
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+</style>
+
+{% if user.is_authenticated %}
+{% if user.Estado == 1 %}
+{% if user.TipoUtilizador == "Administrador" %}
+<ul class="navbar-nav md-auto">
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown">Configurações</a>
+        <div class="dropdown-menu" arial-labelleby="navbarDropdown">
+            <a class="dropdown-item" href="/configuracoes/geral">Configurações gerais</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/configuracoes/horarios_tranportes/">Horários Transportes</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/configuracoes/horarios_atividades/">Horários Atividades</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/configuracoes/escolas/">Escolas</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/configuracoes/unidades_organicas/">Unidade Orgânica</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/configuracoes/departamentos/">Departamento</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/configuracoes/cursos/">Curso</a>
+        </div>
+    </li>
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown">Almoços</a>
+        <div class="dropdown-menu" arial-labelleby="navbarDropdown">
+            <a class="dropdown-item" href="/almocos/menu/">Menu</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/almocos/ementa/">Ementa</a>
+        </div>
+    </li>
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown">Transportes</a>
+        <div class="dropdown-menu" arial-labelleby="navbarDropdown">
+            <a class="dropdown-item" href="/transportes/autocarro/">Autocarros</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/transportes/percurso/">Percursos</a>
+        </div>
+    </li>
+    <li class="nav-item dropdown">
+        <a class="nav-link" href="/inscricoes/inscricao/">Inscrições</a>
+        <a href="/atividades/">Atividades</a>
+        <a href="/tarefas">Tarefas</a>
+        <a href="/utilizador/util">Utilizadores</a>
+    </li>
+</ul>
+
+<ul class="navbar-nav ml-auto">
+    <div style="float: right;">
+        <li class="nav-link dropdown d-inline-block float-left">
+            <button class="nav-link" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="notificacao-badge" href="" style="border: 0; background: 0;">
+                <i class="fas fa-bell"></i><span class="badge badge-light" style="top:-13px; background-color: yellow; border-radius: 50%;">{{counter}}</span>
+            </button>
+             <div class="notificacao dropdown-menu dropdown-menu-right" aria-labelledby="notificacao-badge">
+                <h4 class="dropdown-header"><strong>Notificações</strong></h4>
+             <div id="bell" class="container" style="max-height: 300px; overflow: auto">
+                <p class="dropdown-divider"></p>
+                {% for s in Notificacao %}
+                {% if s.is_read == 0%}
+                <a class="dropdown-item" style="border-bottom: 5px lightgray; color: red;" href="/notificacao" value="{{s.id}}">{{s.assunto}}</a>
+                <br>
+                {% endif %}
+                {% endfor %}
+                </div>
+                <p class="dropdown-divider"></p>
+                <a class="dropdown-item" href="/notificacao">Minhas Notificações</a>
+                <p class="dropdown-divider"></p>
+
+                <a class="dropdown-item" href="/notificacao/enviar">Enviar Notificação</a>
+                <p class="dropdown-divider"></p>
+
+                <a class="dropdown-item" href="/notificacao/enviadas">Notificações Enviadas</a>
+            </div>
+        </li>
+        <a href="/utilizador/util/{{user.id}}"><i class="fas fa-user fa-lg"></i></a>
+        <a href="/utilizador/logout"><i class="fas fa-sign-out-alt fa-lg"></i></a>
+    </div>
+</ul>
+{% elif user.TipoUtilizador == "Coordenador" %}
+<ul class="navbar-nav md-auto">
+    <a href="/atividades">Atividades do Departamento</a>
+    <a href="/inscricoes/inscricao/">Inscrições</a>
+    <a href="/tarefas/colaboradores">Colaboradores</a>
+    <a href="/tarefas">Tarefas</a>
+    <a href="/utilizador/util">Utilizadores</a>
+</ul>
+
+<ul class="navbar-nav ml-auto">
+    <div style="float: right;">
+        <li class="nav-link dropdown d-inline-block float-left">
+            <button class="nav-link" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="notificacao-badge" href="" style="border: 0; background: 0;">
+                <i class="fas fa-bell"></i><span class="badge badge-light" style="top:-13px; background-color: yellow; border-radius: 50%;">{{counter}}</span>
+            </button>
+             <div class="notificacao dropdown-menu dropdown-menu-right" aria-labelledby="notificacao-badge">
+                <h4 class="dropdown-header"><strong>Notificações</strong></h4>
+                <p class="dropdown-divider"></p>
+                {% for s in Notificacao %}
+                {% if s.is_read == 0%}
+                <a class="dropdown-item" style="border-bottom: 5px lightgray; color: red;" href="/notificacao">{{s.assunto}}</a>
+                <br>
+                {% endif %}
+                {% endfor %}
+                <p class="dropdown-divider"></p>
+                <a class="dropdown-item" href="/notificacao">Minhas Notificações</a>
+                <p class="dropdown-divider"></p>
+
+                <a class="dropdown-item" href="/notificacao/enviar">Enviar Notificação</a>
+                <p class="dropdown-divider"></p>
+
+                <a class="dropdown-item" href="/notificacao/enviadas">Notificações Enviadas</a>
+            </div>
+        </li>        <a href="/utilizador/util/{{user.id}}"><i class="fas fa-user fa-lg"></i></a>
+        <a href="/utilizador/logout"><i class="fas fa-sign-out-alt fa-lg"></i></a>
+    </div>
+</ul>
+{% elif user.TipoUtilizador == "Colaborador" %}
+<ul class="navbar-nav md-auto">
+    <a href="/tarefas/atribuidas">Tarefas Atribuídas</a>
+    <a href="/tarefas/disponibilidades">Disponibilidades</a>
+</ul>
+
+<ul class="navbar-nav ml-auto">
+    <div style="float: right;">
+        <li class="nav-link dropdown d-inline-block float-left">
+            <button class="nav-link" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="notificacao-badge" href="" style="border: 0; background: 0;">
+                <i class="fas fa-bell"></i><span class="badge badge-light" style="top:-13px; background-color: yellow; border-radius: 50%;">{{counter}}</span>
+            </button>
+             <div class="notificacao dropdown-menu dropdown-menu-right" aria-labelledby="notificacao-badge">
+                <h4 class="dropdown-header"><strong>Notificações</strong></h4>
+                <p class="dropdown-divider"></p>
+                {% for s in Notificacao %}
+                {% if s.is_read == 0%}
+                <a class="dropdown-item" style="border-bottom: 5px lightgray; color: red;" href="/notificacao">{{s.assunto}}</a>
+                <br>
+                {% endif %}
+                {% endfor %}
+                <p class="dropdown-divider"></p>
+                <a class="dropdown-item" href="/notificacao">Minhas Notificações</a>
+                <p class="dropdown-divider"></p>
+
+                <a class="dropdown-item" href="/notificacao/enviar">Enviar Notificação</a>
+                <p class="dropdown-divider"></p>
+
+                <a class="dropdown-item" href="/notificacao/enviadas">Notificações Enviadas</a>
+            </div>
+        </li>        <a href="/utilizador/util/{{user.id}}"><i class="fas fa-user fa-lg"></i></a>
+        <a href="/utilizador/logout"><i class="fas fa-sign-out-alt fa-lg"></i></a>
+    </div>
+</ul>
+{% elif user.TipoUtilizador == "Professor Universitario" %}
+<ul class="navbar-nav md-auto">
+    <a href="/atividades/">Minhas Atividades</a>
+</ul>
+
+<ul class="navbar-nav ml-auto">
+    <div style="float: right;">
+        <li class="nav-link dropdown d-inline-block float-left">
+            <button class="nav-link" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="notificacao-badge" href="" style="border: 0; background: 0;">
+                <i class="fas fa-bell"></i><span class="badge badge-light" style="top:-13px; background-color: yellow; border-radius: 50%;">{{counter}}</span>
+            </button>
+             <div class="notificacao dropdown-menu dropdown-menu-right" aria-labelledby="notificacao-badge">
+                <h4 class="dropdown-header"><strong>Notificações</strong></h4>
+                <p class="dropdown-divider"></p>
+                {% for s in Notificacao %}
+                {% if s.is_read == 0%}
+                <a class="dropdown-item" style="border-bottom: 5px lightgray; color: red;" href="/notificacao">{{s.assunto}}</a>
+                <br>
+                {% endif %}
+                {% endfor %}
+                <p class="dropdown-divider"></p>
+                <a class="dropdown-item" href="/notificacao">Minhas Notificações</a>
+                <p class="dropdown-divider"></p>
+
+                <a class="dropdown-item" href="/notificacao/enviar">Enviar Notificação</a>
+                <p class="dropdown-divider"></p>
+
+                <a class="dropdown-item" href="/notificacao/enviadas">Notificações Enviadas</a>
+            </div>
+        </li>        <a href="/utilizador/util/{{user.id}}"><i class="fas fa-user fa-lg"></i></a>
+        <a href="/utilizador/logout"><i class="fas fa-sign-out-alt fa-lg"></i></a>
+    </div>
+</ul>
+{% else %}
+<ul class="navbar-nav md-auto">
+    {% if inscricao %}
+        <a href="/inscricoes/inscricao/">Minha Inscrição</a>
+        <a href="/inscricoes/ver_atividades/">Minhas Atividades</a>
+        <a href="/almocos/ementa">Almoço</a>
+        <a href="/transportes/percurso">Transportes</a>
+    {% else %}
+        <a href="/inscricoes/criar_inscricao/">Inscrever</a>
+    {% endif %}
+</ul>
+
+<ul class="navbar-nav ml-auto">
+    <div style="float: right;">
+        <li class="nav-link dropdown d-inline-block float-left">
+            <button class="nav-link" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="notificacao-badge" href="" style="border: 0; background: 0;">
+                <i class="fas fa-bell"></i><span class="badge badge-light" style="top:-13px; background-color: yellow; border-radius: 50%;">{{counter}}</span>
+            </button>
+             <div class="notificacao dropdown-menu dropdown-menu-right" aria-labelledby="notificacao-badge">
+                <h4 class="dropdown-header"><strong>Notificações</strong></h4>
+                <p class="dropdown-divider"></p>
+                {% for s in Notificacao %}
+                {% if s.is_read == 0%}
+                <a class="dropdown-item" style="border-bottom: 5px lightgray; color: red;" href="/notificacao">{{s.assunto}}</a>
+                <br>
+                {% endif %}
+                {% endfor %}
+                <p class="dropdown-divider"></p>
+                <a class="dropdown-item" href="/notificacao">Minhas Notificações</a>
+                <p class="dropdown-divider"></p>
+
+                <a class="dropdown-item" href="/notificacao/enviar">Enviar Notificação</a>
+                <p class="dropdown-divider"></p>
+
+                <a class="dropdown-item" href="/notificacao/enviadas">Notificações Enviadas</a>
+            </div>
+        </li>        <a href="/utilizador/util/{{user.id}}"><i class="fas fa-user fa-lg"></i></a>
+        <a href="/utilizador/logout"><i class="fas fa-sign-out-alt fa-lg"></i></a>
+    </div>
+</ul>
+{% endif %}
+{% else %}
+<ul class="navbar-nav md-auto">
+    <a><strong> Esta Conta está por validar. </strong></a>
+</ul>
+
+<ul class="navbar-nav ml-auto">
+    <div style="float: right;">
+        <li class="nav-link dropdown d-inline-block float-left">
+            <button class="nav-link" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="notificacao-badge" href="" style="border: 0; background: 0;">
+                <i class="fas fa-bell"></i><span class="badge badge-light" style="top:-13px; background-color: yellow; border-radius: 50%;">{{counter}}</span>
+            </button>
+             <div class="notificacao dropdown-menu dropdown-menu-right" aria-labelledby="notificacao-badge">
+                <h4 class="dropdown-header"><strong>Notificações</strong></h4>
+                <p class="dropdown-divider"></p>
+                {% for s in Notificacao %}
+                {% if s.is_read == 0%}
+                <a class="dropdown-item" style="border-bottom: 5px lightgray; color: red;" href="/notificacao">{{s.assunto}}</a>
+                <br>
+                {% endif %}
+                {% endfor %}
+                <p class="dropdown-divider"></p>
+                <a class="dropdown-item" href="/notificacao">Minhas Notificações</a>
+                <p class="dropdown-divider"></p>
+                {% if user.Estado == 1 %}
+                <a class="dropdown-item" href="/notificacao/enviar">Enviar Notificação</a>
+                <p class="dropdown-divider"></p>
+                <a class="dropdown-item" href="/notificacao/enviadas">Notificações Enviadas</a>
+                {% endif %}
+            </div>
+        </li>        <a href="/utilizador/util/{{user.id}}"><i class="fas fa-user fa-lg"></i></a>
+        <a href="/utilizador/logout"><i class="fas fa-sign-out-alt fa-lg"></i></a>
+    </div>
+</ul>
+{% endif %}
+{% else %}
+<ul class="navbar-nav ml-auto">
+    <div style="float: right;">
+        <a href="/utilizador/login">Login</a>
+        <a href="/utilizador/register">Register</a>
+    </div>
+</ul>
+{% endif %}

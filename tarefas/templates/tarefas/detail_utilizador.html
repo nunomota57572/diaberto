@@ -1,0 +1,79 @@
+{% extends 'configuracoes/base.html' %}
+
+{% block content %}
+
+<div class="main">
+    <a>utilizador</a> / detalhes
+    <div class="box">
+        <center>
+            <h2>Detalhes do Utilizador</h2>
+        </center>
+        <hr>
+
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label>Nome</label><br>
+                {{utilizador.first_name}} {{utilizador.last_name}}
+            </div>
+            <div class="form-group col-md-4">
+                <label>Username</label><br>
+                {{utilizador.username}}
+            </div>
+            <div class="form-group col-md-4">
+                <label>Email</label><br>
+                {{utilizador.email}}
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label>Unidade Orgânica</label><br>
+                {% if utilizador.UO %}
+                    {{utilizador.UO}}
+                {% else %}
+                    ------
+                {% endif %}
+            </div>
+            <div class="form-group col-md-4">
+                <label>Departamento</label><br>
+                {% if utilizador.Departamento %}
+                    {{utilizador.Departamento}}
+                {% else %}
+                    ------
+                {% endif %}
+            </div>
+            <div class="form-group col-md-4">
+                <label>Curso</label><br>
+                {% if utilizador.Curso %}
+                    {{utilizador.Curso}}
+                {% else %}
+                    ------
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label>Tipo de utilizador</label><br>
+                {{utilizador.TipoUtilizador}}
+            </div>
+            <div class="form-group col-md-4">
+                <label>Telefone</label><br>
+                {{utilizador.Telefone}}
+            </div>
+            <div class="form-group col-md-4">
+                <label>Estado</label><br>
+                {% if utilizador.Estado == 0 %}Pendente{% else %}Validado{% endif %}
+            </div>
+        </div>
+        <br>
+        <center>
+            <a class="btn btn-primary" href="/utilizador/util/{{ utilizador.id }}/editar"><span class="glyphicon glyphicon-pencil" > Editar</span></a>
+            {% if request.user.id == utilizador.id %}
+            {% else %}
+            <a class="btn btn-danger" href="/utilizador/util/delete/{{ utilizador.id }}"><span class="glyphicon glyphicon-remove" > Apagar</span></a>
+            {% endif %}
+        </center>
+    </div>
+</div>
+{% endblock %}

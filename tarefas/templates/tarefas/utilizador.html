@@ -1,0 +1,27 @@
+{% extends 'layout/base.html' %}
+
+{% block content %}
+
+
+
+
+
+
+    <div class="row">
+
+        <div class="row s12, m8, l8">
+            <h3>Nome: {{utilizador.first_name}}</h3>
+            <h5>UserName: {{utilizador.username}} </h5>
+            <h6>Email: {{utilizador.email}} </h6>
+            <h6>UO: {{utilizador.UO}} </h6>
+            <h6>Tipo:
+               {% if utilizador.is_superuser == 0 %}
+               Colaborador
+               {% else %}
+               Coordenador
+               {% endif %} </h6>
+        </div>
+
+    </div>
+
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'configuracoes/base.html' %}
+
+{% block content %}
+    
+ <div class="main">
+ 	<a>Tarefas</a> / <a href="/tarefas/disponibilidades">Disponibilidades</a> / {{tipo}}<br>
+	<br>
+	<h1 class="title" style="text-align:center">{{tipo}} Disponibilidade</h1>
+	<br>
+
+    <form method="POST">
+        {% csrf_token %}
+        <div class="box">
+        {% include 'tarefas/includes/DispForm.html' %}
+        <button style="float: right" class="button is-info" type="submit">{{tipo}}</button>
+        <a class="button is-link is-light is-danger" style="text-align:left" href="/tarefas/disponibilidades">Cancel</a>
+    	</div>
+    </form>
+</br>
+</div>
+
+{% endblock %}

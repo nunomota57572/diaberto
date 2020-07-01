@@ -1,0 +1,111 @@
+        {% extends 'configuracoes/base.html' %}
+        {% load widget_tweaks %}
+        {% block content %}
+
+        <div class="side">
+          <aside class="menu">
+            <p class="menu-label">
+              FILTROS DE COLABORADOR
+            </p>
+
+            <form method="get">
+              <div class="field">
+                <p class="control has-icons-left">
+                  <span class="icon is-small is-left">
+                    <i class="fas fa-search"></i>
+                  </span>
+                  {% render_field filter.form.username class="input" placeholder="Username" %}
+                </p>
+              </div>
+
+              <div class="field">
+                <p class="control has-icons-left">
+                  <span class="icon is-small is-left">
+                    <i class="fas fa-search"></i>
+                  </span>
+                  {% render_field filter.form.first_name class="input" placeholder="Primeiro Nome" %}
+                </p>
+              </div>
+
+              <div class="field">
+                <p class="control has-icons-left">
+                  <span class="icon is-small is-left">
+                    <i class="fas fa-search"></i>
+                  </span>
+                  {% render_field filter.form.first_name class="input" placeholder="Ultimo Nome" %}
+                </p>
+              </div>
+
+             
+            <button type="submit" class="btn btn-primary">
+              <span class="glyphicon glyphicon-search"></span> Search
+            </button>
+          </form>
+          </aside>
+        </div>
+
+        <div class="main">
+            <nav class="breadcrumb" aria-label="breadcrumbs" style="background-color:#ffff">
+              <ul>
+                <li><a href="/inicial">Início</a></li>
+                <li class="is-active"><a href="#" aria-current="page">Atribuir Tarefas</a></li>
+              </ul>
+            </nav>
+            <br>
+            <h1 class="title" style="text-align:center">Atribuir Tarefa</h1>
+
+            <div class="row">
+              {% if atribuido %}
+                <table class="table">
+                  <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th><abbr title="Unidade Organica">UO</abbr></th>
+                        <th>Tarefa atribuida</th>
+                    </tr>
+                  </thead>
+                      <tr>
+                      <form method="post">
+                        {% csrf_token %}
+                        <th>{{atribuido.username}}</th>
+                        <th>{{atribuido.UO}}</th>
+                        <td><a href="retirar/{{atribuido.id}}" class="button is-danger is-outlined" type="button" style="margin-bottom: 14px; margin-right: 20px; text-decoration:none">
+                        <span class="icon"><i class="fas fa-user-minus"></i>
+                        </span>
+                        <span>Retirar Atribuição</span> <!----></a></td>
+                      </form>
+                    </tr>
+            </table>
+            {% endif %}
+          	        <table class="table">
+                      <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th><abbr title="Unidade Organica">UO</abbr></th>
+                            <th>Tarefa atribuida</th>
+                        </tr>
+                      </thead>
+                      {% for co in filter.qs %}
+                        {% for disp in disps %}
+                          {% if co.id.id == disp.UtilizadorID.id %}
+                            {% if atribuido.id.id != co.id.id %}
+                          <tr>
+                          <form method="post">
+                            {% csrf_token %}
+                            <td><input class="label" name="username" readonly value="{{co.username}}">{{co.username}}</input></td>
+                            <td>{{co.UO}}</td>
+                            <td><button type="submit" class="button is-info  is-outlined">
+                              <span class="icon is-small">
+                                <i class="fas fa-user-plus"></i>
+                              </span>
+                              <span>Atribuir Tarefa</span> <!----></button></td>
+                          </form>
+                          </tr>
+                            {% endif %}
+                          {% endif %}
+                        {% endfor %}
+                      {% endfor %}
+          	    </div>
+          	    </table>
+
+{% endblock %}

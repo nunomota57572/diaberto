@@ -1,0 +1,203 @@
+{% extends 'configuracoes/base.html' %}
+
+{% block content %}
+<div class="main">
+    <nav class="breadcrumb" aria-label="breadcrumbs" style="background-color:#ffff">
+        <ul>
+            <li><a href="/inicial">Início</a></li>
+            <li class="is-active"><a href="">Register</a></li>
+        </ul>
+    </nav>
+    <form method="POST">
+        {% csrf_token %}
+        <div class="box">
+            <center><h2>Registar Utilizador</h2></center>
+            <hr>
+            <br>
+            <form method="POST">
+                {% csrf_token %}
+                {{form.as_p}}
+                <br>
+                <div class="field">
+                    <div class="buttons is-centered">
+                        <a class="button is-medium is-link is-light is-danger"
+                            style="text-align:left;text-decoration:none" href="/inicial">Cancelar</a>
+                        <button class="button is-medium is-link is-success" style="text-align:right"
+                            type="submit">Registar</button>
+                    </div>
+                </div>
+
+            </form>
+            <br>
+
+            <div class="d-flex flex-column">
+                <center>
+                    <p>Se já possui uma conta, faça <a href="/utilizador/login"
+                            target="blank"><strong>login</strong></a> .</p>
+                </center>
+            </div>
+            <br>
+            <div class="error_message">{{ form.non_field_errors }}</div>
+
+        </div>
+    </form>
+</div>
+
+<script>
+
+
+    $('#id_UO').hide();
+    $('#id_UO').removeAttr('required');
+    $('#id_UO').removeAttr('data-error');
+
+    var obj = document.querySelector("label[for='id_UO']");
+    obj.style.display = "none";
+    obj.style.visibility = "hidden";
+
+    $('#id_Departamento').hide();
+    $('#id_Departamento').removeAttr('required');
+    $('#id_Departamento').removeAttr('data-error');
+
+    var obj = document.querySelector("label[for='id_Departamento']");
+    obj.style.display = "none";
+    obj.style.visibility = "hidden";
+
+    $('#id_Curso').hide();
+    $('#id_Curso').removeAttr('required');
+    $('#id_Curso').removeAttr('data-error');
+
+    var obj = document.querySelector("label[for='id_Curso']");
+    obj.style.display = "none";
+    obj.style.visibility = "hidden";
+
+
+    $("#id_TipoUtilizador").change(function () {
+        if ($(this).val() == "Coordenador") {
+            $('#id_UO').show();
+            $('#id_UO').attr('required', '');
+            $('#id_UO').attr('data-error', 'Este campo é necessário.');
+
+            var obj = document.querySelector("label[for='id_UO']");
+            obj.style.display = "block";
+            obj.style.visibility = "visible";
+
+            $('#id_Departamento').show();
+            $('#id_Departamento').attr('required', '');
+            $('#id_Departamento').attr('data-error', 'Este campo é necessário.');
+
+            var obj = document.querySelector("label[for='id_Departamento']");
+            obj.style.display = "block";
+            obj.style.visibility = "visible";
+
+            $('#id_Curso').hide();
+            $('#id_Curso').removeAttr('required');
+            $('#id_Curso').removeAttr('data-error');
+
+            var obj = document.querySelector("label[for='id_Curso']");
+            obj.style.display = "none";
+            obj.style.visibility = "hidden";
+
+        } else if ($(this).val() == "Participante") {
+            $('#id_UO').hide();
+            $('#id_UO').removeAttr('required');
+            $('#id_UO').removeAttr('data-error');
+
+            var obj = document.querySelector("label[for='id_UO']");
+            obj.style.display = "none";
+            obj.style.visibility = "hidden";
+
+            $('#id_Departamento').hide();
+            $('#id_Departamento').removeAttr('required');
+            $('#id_Departamento').removeAttr('data-error');
+
+            var obj = document.querySelector("label[for='id_Departamento']");
+            obj.style.display = "none";
+            obj.style.visibility = "hidden";
+
+            $('#id_Curso').hide();
+            $('#id_Curso').removeAttr('required');
+            $('#id_Curso').removeAttr('data-error');
+
+            var obj = document.querySelector("label[for='id_Curso']");
+            obj.style.display = "none";
+            obj.style.visibility = "hidden";
+
+        } else if ($(this).val() == "Colaborador") {
+            $('#id_UO').show();
+            $('#id_UO').attr('required', '');
+            $('#id_UO').attr('data-error', 'Este campo é necessário.');
+
+            var obj = document.querySelector("label[for='id_UO']");
+            obj.style.display = "block";
+            obj.style.visibility = "visible";
+
+            $('#id_Departamento').hide();
+            $('#id_Departamento').removeAttr('required');
+            $('#id_Departamento').removeAttr('data-error');
+
+            var obj = document.querySelector("label[for='id_Departamento']");
+            obj.style.display = "none";
+            obj.style.visibility = "hidden";
+
+            $('#id_Curso').show();
+            $('#id_Curso').attr('required', '');
+            $('#id_Curso').attr('data-error', 'Este campo é necessário.');
+
+            var obj = document.querySelector("label[for='id_Curso']");
+            obj.style.display = "block";
+            obj.style.visibility = "visible";
+
+        } else if ($(this).val() == "Administrador") {
+            $('#id_UO').hide();
+            $('#id_UO').removeAttr('required');
+            $('#id_UO').removeAttr('data-error');
+
+            var obj = document.querySelector("label[for='id_UO']");
+            obj.style.display = "none";
+            obj.style.visibility = "hidden";
+
+            $('#id_Departamento').hide();
+            $('#id_Departamento').removeAttr('required');
+            $('#id_Departamento').removeAttr('data-error');
+
+            var obj = document.querySelector("label[for='id_Departamento']");
+            obj.style.display = "none";
+            obj.style.visibility = "hidden";
+
+            $('#id_Curso').hide();
+            $('#id_Curso').removeAttr('required');
+            $('#id_Curso').removeAttr('data-error');
+
+            var obj = document.querySelector("label[for='id_Curso']");
+            obj.style.display = "none";
+            obj.style.visibility = "hidden";
+
+        } else if ($(this).val() == "Professor Universitario") {
+            $('#id_UO').show();
+            $('#id_UO').attr('required', '');
+            $('#id_UO').attr('data-error', 'Este campo é necessário.');
+
+            var obj = document.querySelector("label[for='id_UO']");
+            obj.style.display = "block";
+            obj.style.visibility = "visible";
+
+            $('#id_Departamento').show();
+            $('#id_Departamento').attr('required', '');
+            $('#id_Departamento').attr('data-error', 'Este campo é necessário.');
+
+            var obj = document.querySelector("label[for='id_Departamento']");
+            obj.style.display = "block";
+            obj.style.visibility = "visible";
+
+            $('#id_Curso').hide();
+            $('#id_Curso').removeAttr('required');
+            $('#id_Curso').removeAttr('data-error');
+
+            var obj = document.querySelector("label[for='id_Curso']");
+            obj.style.display = "none";
+            obj.style.visibility = "hidden";
+        }
+    });
+
+</script>
+{% endblock %}

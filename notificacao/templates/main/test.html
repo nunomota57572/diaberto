@@ -1,0 +1,19 @@
+
+
+    {% if user.Estado == 1 %}
+
+    <a href="enviar" class="button is-success modal-button" data-target="#modal" type="button" style="margin-bottom: 14px; margin-right: 20px; text-decoration:none; color: white;"></span><span>Enviar Notificação</span></a>
+    <a href="enviadas" class="button is-info" type="button" style="margin-bottom: 14px; margin-right: 20px; text-decoration:none"></i></span><span>Notificações Enviadas</span></a>
+    {% endif %}
+
+        <div class="box w-100">
+            <strong>Enviada Por:</strong>  {{notif.autorid}}
+            <br>
+            <strong>Data de Envio:</strong>   {{notif.criadoem}}
+            <br>
+            <strong>Assunto:</strong>   {{notif.assunto}}
+            <br>
+            <strong>Descrição:</strong>   <br>{{notif.descricao}}
+            <br>
+        </div>
+

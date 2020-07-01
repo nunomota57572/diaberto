@@ -1,0 +1,145 @@
+{% extends 'configuracoes/base.html' %}
+{% block content %}
+
+<div class="side">
+  <aside class="menu">
+    <p class="menu-label">
+      FILTROS TAREFAS ATRIBUÍDAS
+    </p>
+
+    <form method="get">
+      <div class="field">
+        <p class="control has-icons-left">
+            <p class="menu-label">Tipo:</p>
+            <div class="control" style="text-align:center">
+                     <div class="select is-midium is-fullwidth">
+                      <select name="Tipo" id="Tipo">
+                          <option value=""></option>
+                          <option value="Atividade">Atividades</option>
+                          <option value="Acompanhar participante">Acompanhar participante</option>
+                          <option value="Outro">Outros</option>
+                      </select>
+                    </div>
+                  </div>
+        </p>
+      </div>
+
+    <div class="field">
+      <p class="control has-icons-left">
+          <p class="menu-label">Estado:</p>
+            <div class="control" style="text-align:center">
+                     <div class="select is-midium is-fullwidth">
+                      <select name="Concluida" id="Concluida">
+                          <option value=""></option>
+                          <option value="0">Pendente</option>
+                          <option value="1">Concluida</option>
+                      </select>
+                    </div>
+                  </div>
+      </p>
+    </div>
+    <br>
+    <button type="submit" class="btn btn-primary">
+      <span class="glyphicon glyphicon-search"></span> Procurar
+    </button>
+  </form>
+  </aside>
+</div>
+
+<div class="main">
+    <a>Tarefas</a> / Atribuídas<br><br>
+    <h1 class="title" style="text-align:center">Tarefas Atribuídas</h1>
+        <div class="row">
+            <table class="table">
+            <thead>
+               <tr>
+                <th><center>Horario</center></th>
+                <th><center>Nome</center></th>
+                <th><center>Origem - Sala/Edificio</center></th>
+                <th><center>Destino - Sala/Edificio</center></th>
+                <th><center>Tipo</center></th>
+                <th><center>Grupos</center></th>
+                <th><center>Estado</center></th>
+                <th><center>Acções</center></th>
+              </tr>
+            </thead>
+              {% for taf in filter.qs %}
+            <tr>
+              <td><center>{{taf.Dia}}  {{taf.HorasInicio}} - {{taf.HorasFim}}</center></td>
+
+              <td><a  class="button is-outlined is-fullwidth"style="text-decoration:none" href="/tarefas/tarefa/{{taf.id}}" >
+                  {{taf.Nome|truncatewords:4}}
+                  </a>
+                </td>
+              <td><center>{{taf.Origem}}</center></td>
+
+              <td><center>{{taf.Destino}}</center></td>
+
+              <td><center>{{taf.Tipo}}</center></td>
+
+              <td><center>{{taf.Grupos}}</center></td>
+
+              {% if taf.Concluida == 0 %}
+                <td><center><a style="pointer-events: none; cursor: default;width: 7rem; font-size: small;text-decoration:none" class="button is-warning is-small">
+                Pendente</a></center></td>
+                <td>
+                <center><a style="font-size: large;text-decoration:none" class="modal-button {{taf.id}}" data-target="#modal-{{taf.id}}" title="Concluir Tarefa">
+                <i class="icon is-medium fas fa-check-circle has-text-success" aria-hidden="true"></i>
+                </a>
+                </center>
+                <div id="modal-{{taf.id}}" class="modal">
+                  <div class="modal-background"></div>
+                  <div class="modal-card">
+                    <section class="modal-card-body">
+                      <div class="media">
+                        <div class="media-content">
+                          <p>Tem a certeza que pretende concluir esta tarefa? Esta operação não é reversível</p>
+                        </div>
+                      </div>
+                    </section>
+                    <footer class="modal-card-foot">
+                      <a class="button" href="/tarefas/atribuidas" style="text-align:center;text-decoration:none">Cancelar</a>
+                      <a class="button is-link is-light is-centered is-success" style="text-align:center;text-decoration:none" href="{% url 'tarefas:concluir_tarefa' pk=taf.id %}">Concluir</a>
+                    </footer>
+                  </section>
+                </div>
+                <button class="modal-close is-large" aria-label="close"></button>
+              </div>
+                </td>
+
+              {%else%}
+                <td><center><a style="pointer-events: none; cursor: default;width: 7rem; font-size: small;text-decoration:none" class="button is-success is-small">
+                Concluida</a></center></td>
+              {% endif %}
+            </tr>
+
+            {% endfor %}
+        </table>
+
+        <script>
+        $('btn.btnDelete').on('click', function (e) {
+            e.preventDefault();
+            var id = $(this).closest('tr').data('id');
+            $('#myModal').data('id', id).modal('show');
+        });
+
+        $('#btnDelteYes').click(function () {
+            var id = $('#myModal').data('id');
+            $('[data-id=' + id + ']').remove();
+            $('#myModal').modal('hide');
+        });
+
+
+           $(".modal-button {{co.id.id}}").click(function() {
+              var target = $(this).data("target");
+              $("html").addClass("is-clipped");
+              $(target).addClass("is-active");
+           });
+
+           $(".modal-close").click(function() {
+              $("html").removeClass("is-clipped");
+              $(this).parent().removeClass("is-active");
+           });
+        </script>
+
+{% endblock %}

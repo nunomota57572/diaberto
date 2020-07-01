@@ -1,0 +1,283 @@
+{% extends 'configuracoes/base.html' %}
+{% load widget_tweaks %}
+
+{% block content %}
+
+<div class="side">
+  <aside class="menu">
+    <p class="menu-label">
+      FILTROS Utilizador
+    </p>
+
+    <form method="get">
+
+      <div class="field">
+        <label>Username:</label>
+        <p class="control has-icons-left">
+          <span class="icon is-small is-left">
+            <i class="fas fa-search"></i>
+          </span>
+          <!--<input type="text" name="username" id="inputUsername" class="form-control" placeholder="Username">-->
+          {% render_field utilizadores.form.username class="input" id="inputUsername" type="search" placeholder="Username" %}
+        </p>
+      </div>
+
+      <div class="field">
+        <label>Unidade Orgânica:</label>
+        <p class="control has-icons-left">
+          <span class="icon is-small is-left">
+            <i class="fas fa-search"></i>
+          </span>
+          <!--<input type="text" name="UO" id="inputUO" class="form-control" placeholder="Unidade Orgânica">-->
+          {% render_field utilizadores.form.UO class="input" type="search" %}
+        </p>
+      </div>
+
+      <div class="field">
+        <label>Departamento:</label>
+        <p class="control has-icons-left">
+          <span class="icon is-small is-left">
+            <i class="fas fa-search"></i>
+          </span>
+          <!--<input type="text" name="UO" id="inputUO" class="form-control" placeholder="Unidade Orgânica">-->
+          {% render_field utilizadores.form.Departamento class="input" type="search" %}
+        </p>
+      </div>
+
+      <div class="field">
+        <label>Curso:</label>
+        <p class="control has-icons-left">
+          <span class="icon is-small is-left">
+            <i class="fas fa-search"></i>
+          </span>
+          <!--<input type="text" name="UO" id="inputUO" class="form-control" placeholder="Unidade Orgânica">-->
+          {% render_field utilizadores.form.Curso class="input" type="search" %}
+        </p>
+      </div>
+      <center>
+        <button type="submit" class="btn btn-primary">
+          <span class="glyphicon glyphicon-search"></span> Procurar
+        </button>
+      </center>
+    </form>
+  </aside>
+</div>
+
+<div class="main">
+  <nav class="breadcrumb" aria-label="breadcrumbs" style="background-color:#ffff">
+        <ul>
+            <li><a href="/inicial">Início</a></li>
+            <li class="is-active"><a href="">Utilizadores</a></li>
+        </ul>
+    </nav>
+  <h1 class="title" style="text-align:center">Utilizadores</h1>
+  <div class="row">
+    <table class="table">
+      <thead>
+        <tr>
+
+          <th>
+            <center>Username</center>
+
+          </th>
+
+          <th>
+            <center>Tipo</center>
+          </th>
+          <th>
+            <center>UO</center>
+          </th>
+          <th>
+            <center>Departamento</center>
+          </th>
+          <th>
+            <center>Curso</center>
+          </th>
+          <th>
+            <center>Estado</center>
+          </th>
+          <th>
+            <center>Ações</center>
+          </th>
+
+
+        </tr>
+      </thead>
+      {% if user.TipoUtilizador == "Coordenador" %}
+      {% for user in utilizadores.qs %}
+      {% if user.TipoUtilizador == "Colaborador" or user.TipoUtilizador == "Professor Universitario" %}
+      {% if request.user.UO == user.UO %}
+      <tr>
+        <th> <a href="{{user.id}}" , class="hoverable" style="color:#000">
+            <center>{{user.username}}</center>
+          </a></th>
+
+        <th>
+          <center>{{user.TipoUtilizador}}</center>
+        </th>
+        <th>{% if user.UO %}
+          <center>{{user.UO}}</center>
+          {% else %}
+          <center>------</center>
+          {% endif %}</th>
+        <th>{% if user.Departamento %}
+          <center>{{user.Departamento}}</center>
+          {% else %}
+          <center>------</center>
+          {% endif %}</th>
+        <th>{% if user.Curso %}
+          <center>{{user.Curso}}</center>
+          {% else %}
+          <center>------</center>
+          {% endif %}</th>
+        <th>
+          <center>{% if user.Estado == 0 %}Pendente{% else %}Validado{% endif %}</center>
+        </th>
+        <th>
+          <a href="{{user.id}}/editar">
+            <span class="icon"><i class="icon is-medium fas fa-edit"></i>
+            </span>
+            <!----></a>
+          {% if request.user.id == user.id %}
+          {% else %}
+          <a class="modal-button {{user.id}}" data-target="#modal-{{user.id}}">
+            <span class="icon "><i class="icon is-medium fas fa-times-circle" style="color: #ff3060;"></i>
+            </span>
+            <!----></a>
+
+          <div id="modal-{{user.id}}" class="modal">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+              <section class="modal-card-body">
+                <div class="media">
+                  <!---->
+                  <div class="media-content">
+                    <p>Tem a certeza que quer eliminar o utilizador?</p>
+                  </div>
+                </div>
+              </section>
+              <footer class="modal-card-foot">
+                <a class="button" href="" style="text-align:center;text-decoration:none">Cancelar</a>
+                <a class="button is-link is-light is-centered is-danger" style="text-align:center;text-decoration:none"
+                  href="delete/{{user.id}}">Apagar</a>
+              </footer>
+              </section>
+
+            </div>
+            <button class="modal-close is-large" aria-label="close"></button>
+          </div>
+  </div>
+  {% endif %}
+  </th>
+  </tr>
+  {% endif %}
+  {% endif %}
+  {% endfor %}
+  {% elif user.TipoUtilizador == "Administrador" %}
+  {% for user in utilizadores.qs %}
+  <tr>
+    <th> <a href="{{user.id}}" , class="hoverable" style="color:#000">
+        <center>{{user.username}}</center>
+      </a></th>
+
+    <th>
+      <center>{{user.TipoUtilizador}}</center>
+    </th>
+    <th>{% if user.UO %}
+      <center>{{user.UO}}</center>
+      {% else %}
+      <center>------</center>
+      {% endif %}</th>
+    <th>{% if user.Departamento %}
+      <center>{{user.Departamento}}</center>
+      {% else %}
+      <center>------</center>
+      {% endif %}</th>
+    <th>{% if user.Curso %}
+      <center>{{user.Curso}}</center>
+      {% else %}
+      <center>------</center>
+      {% endif %}</th>
+    <th>
+      <center>{% if user.Estado == 0 %}Pendente{% else %}Validado{% endif %}</center>
+    </th>
+    <th >
+      <a href="{{user.id}}/editar">
+        <span class="icon"><i class="icon is-small fas fa-edit"></i>
+        </span>
+        <!----></a>
+      {% if request.user.id == user.id %}
+      {% else %}
+      <a class="modal-button {{user.id}}" data-target="#modal-{{user.id}}">
+        <span class="icon "><i class="icon is-small fas fa-times-circle" style="color: #ff3060;"></i>
+        </span>
+        <!----></a>
+
+      <div id="modal-{{user.id}}" class="modal">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+          <section class="modal-card-body">
+            <div class="media">
+              <!---->
+              <div class="media-content">
+                <p>Tem a certeza que quer eliminar o utilizador?</p>
+              </div>
+            </div>
+          </section>
+          <footer class="modal-card-foot">
+            <a class="button" href="" style="text-align:center;text-decoration:none">Cancelar</a>
+            <a class="button is-link is-light is-centered is-danger" style="text-align:center;text-decoration:none"
+              href="delete/{{user.id}}">Apagar</a>
+          </footer>
+          </section>
+        </div>
+        <button class="modal-close is-large" aria-label="close"></button>
+      </div>
+
+{% endif %}
+
+{% if user.Estado == 0 %}<a style="color: rgb(16, 233, 16);" href="{% url 'utilizador:validar' pk=user.id %}"><span>
+    &#10004;
+  </span></a>{% endif %}
+</th>
+</tr>
+</div>
+{% endfor %}
+{% endif %}
+</table>
+</div>
+<br>
+
+
+
+
+<script>
+
+
+  $('btn.btnDelete').on('click', function (e) {
+    e.preventDefault();
+    var id = $(this).closest('tr').data('id');
+    $('#myModal').data('id', id).modal('show');
+  });
+
+  $('#btnDelteYes').click(function () {
+    var id = $('#myModal').data('id');
+    $('[data-id=' + id + ']').remove();
+    $('#myModal').modal('hide');
+  });
+
+
+  $(".modal-button {{co.id.id}}").click(function () {
+    var target = $(this).data("target");
+    $("html").addClass("is-clipped");
+    $(target).addClass("is-active");
+  });
+
+  $(".modal-close").click(function () {
+    $("html").removeClass("is-clipped");
+    $(this).parent().removeClass("is-active");
+  });
+
+</script>
+
+{% endblock %}

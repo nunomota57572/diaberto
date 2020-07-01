@@ -1,0 +1,141 @@
+{% extends 'configuracoes/base.html' %}
+{% load widget_tweaks %}
+{% block content %}
+
+<div class="side">
+  <aside class="menu">
+    <p class="menu-label">
+      FILTROS DE COLABORADOR
+    </p>
+
+    <form method="get">
+      <div class="field">
+        <p class="control has-icons-left">
+          <span class="icon is-small is-left">
+            <i class="fas fa-search"></i>
+          </span>
+          {% render_field filter.form.username class="input" placeholder="Username" %}
+        </p>
+      </div>
+
+      <div class="field">
+        <p class="control has-icons-left">
+          <span class="icon is-small is-left">
+            <i class="fas fa-search"></i>
+          </span>
+          {% render_field filter.form.first_name class="input" placeholder="Primeiro Nome" %}
+        </p>
+      </div>
+
+      <div class="field">
+        <p class="control has-icons-left">
+          <span class="icon is-small is-left">
+            <i class="fas fa-search"></i>
+          </span>
+          {% render_field filter.form.first_name class="input" placeholder="Ultimo Nome" %}
+        </p>
+      </div>
+
+      
+    <button type="submit" class="btn btn-primary">
+      <span class="glyphicon glyphicon-search"></span> Search
+    </button>
+  </form>
+  </aside>
+</div>
+
+<div class="main">
+  <nav class="breadcrumb" aria-label="breadcrumbs" style="background-color:#ffff">
+    <ul>
+      <li><a href="/inicial">Início</a></li>
+      <li class="is-active"><a href="#" aria-current="page">Colaboradores</a></li>
+    </ul>
+  </nav>
+    <h1 class="title" style="text-align:center">Colaboradores</h1>
+    {% if isco == 'Coordenador'%}
+    <a href="register" class="button is-success is-outlined " type="button" style="margin-bottom: 14px; margin-right: 20px; text-decoration:none">
+      <span class="icon"><i class="fas fa-plus"></i>
+      </span>
+      <span>Adicionar Colaborador</span> <!----></a>
+    {% endif %}
+
+        <div class="row">
+  	        <table class="table">
+              <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th><abbr title="Unidade Organica">UO</abbr></th>
+                    {% if disponibilidade %}<th>Disponibilidades</th>{% endif %}
+                    <th>Atribuição</th>
+                </tr>
+              </thead>
+              {% for co in filter.qs %}
+                  <tr>
+                    <td>{{co.username}}</td>
+                    <td>{{co.UO}}</td>
+                    <!-- {% if co.atribuido %}
+                    <td><a style="width: 7rem; font-size: small;text-decoration:none" href="../tarefas/{{co.atribuido}}/update" class="button is-danger is-small">
+                    Ocupado</a></td>
+                    {% else %}
+                    <td><a style="width: 7rem; font-size: small;text-decoration:none" class="button is-success is-small">
+                    Livre</a></td>
+                    {% endif %} -->
+                      <td> <a class="button is-outlined modal-button {{co.id.id}} is-info" style="text-decoration:none" data-target="#modal-{{co.id.id}}" >Visualizar</a>
+                      <div id = "modal-{{co.id.id}}" class = "modal">
+                         <div class = "modal-background"></div>
+                         <div class = "modal-card">
+                           <section class="modal-card-body">
+                             <center>
+                               <h3 class="title is-3">Colaborador:</h3> <p class="title is-4">{{co.id}}</p>
+                               <table>
+                                 <thead>
+                                  <th><center>Dia</center></th>
+                                  <th><center>Horas</center></th>
+                                  <th><center>Observações</center></th>
+                                </thead>
+                                  {% for dis in disponibilidade %}
+                                  <tr>
+                                  {% if dis.UtilizadorID.id == co.id.id %}
+                                  <td>{{dis.Dia}}</td>
+                                  <td>{{dis.Inicio}} - {{dis.Fim}} </td>
+                                  <td>{{dis.Observacoes}} </td>
+                                  {%endif%}
+
+                                  </tr>
+                                  {% endfor %}
+                               </table>
+                               <a class="button is-link is-light is-danger" style="text-align:left;text-decoration:none" href="">Cancelar</a>
+                            </center>
+                            </section>
+
+                         </div>
+                         <button class = "modal-close is-large" aria-label = "close"></button>
+                      </div>
+
+
+                        </td>
+                  </tr>
+              {% endfor %}
+  	    </div>
+  	    </table>
+
+
+<script>
+
+
+   $(".modal-button {{co.id.id}}").click(function() {
+      var target = $(this).data("target");
+      $("html").addClass("is-clipped");
+      $(target).addClass("is-active");
+   });
+
+   $(".modal-close").click(function() {
+      $("html").removeClass("is-clipped");
+      $(this).parent().removeClass("is-active");
+   });
+
+</script>
+  </div>
+</div>
+
+{% endblock %}

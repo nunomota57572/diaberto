@@ -1,0 +1,151 @@
+{% extends 'configuracoes/base.html' %}
+
+{% block content %}
+
+<div class="main">
+    <nav class="breadcrumb" aria-label="breadcrumbs" style="background-color:#ffff">
+        <ul>
+            <li><a href="/inicial">Início</a></li>
+            <li class="is-active"><a href="">Utilizador {{utilizador.username}}</a></li>
+        </ul>
+    </nav>
+    <div class="box">
+        <center>
+            <h2>Detalhes do Utilizador</h2>
+        </center>
+        <hr>
+
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <center> <label>Nome</label></center>
+                    <center>{{utilizador.Nome}}</center>
+            </div>
+            <div class="form-group col-md-4">
+                <center><label>Username</label></center>
+                <center>{{utilizador.username}}</center>
+            </div>
+            <div class="form-group col-md-4">
+                <center> <label>Email</label></center>
+                    <center> {{utilizador.email}}</center>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <center> <label>Unidade Orgânica</label></center>
+                    <center>  {% if utilizador.UO %}
+                    {{utilizador.UO}}
+                {% else %}
+                    ------
+                {% endif %} </center>
+            </div>
+            <div class="form-group col-md-4">
+                <center>  <label>Departamento</label></center>
+                    <center>  {% if utilizador.Departamento %}
+                    {{utilizador.Departamento}}
+                {% else %}
+                    ------
+                {% endif %}</center>
+            </div>
+            <div class="form-group col-md-4">
+                <center> <label>Curso</label></center>
+                    <center>  {% if utilizador.Curso %}
+                    {{utilizador.Curso}}
+                {% else %}
+                    ------
+                {% endif %}</center>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <center>  <label>Tipo de utilizador</label></center>
+                    <center>  {{utilizador.TipoUtilizador}}</center>
+            </div>
+            <div class="form-group col-md-4">
+                <center>  <label>Telefone</label></center>
+                <center> {{utilizador.Telefone}}</center>
+            </div>
+            <div class="form-group col-md-4">
+                <center> <label>Estado</label></center>
+                    <center>  {% if utilizador.Estado == 0 %}Pendente{% else %}Validado{% endif %}</center>
+            </div>
+        </div>
+        <br>
+        <center>
+            {% if request.user.id == utilizador.id %}
+            {% else %}
+            <a class="button is-danger modal-button" data-target="#modal" type="button" style="margin-bottom: 14px; margin-right: 20px; text-decoration:none; color: white;">
+              <span class="icon"><i class="icon is-medium fas fa-times-circle"></i>
+              </span>
+              <span>Apagar</span> <!---->
+            </a>
+            
+              {% endif %}
+              
+            <a href="/utilizador/util/{{ utilizador.id }}/editar" class="button is-info" type="button" style="margin-bottom: 14px; margin-right: 20px; text-decoration:none">
+              <span class="icon"><i class="icon is-medium fas fa-edit"></i>
+              </span>
+              <span>Editar</span> <!---->
+            </a>
+            {% if request.user.TipoUtilizador == "Administrador" %}
+            {% if request.user.Estado == 1 %}
+            {% if utilizador.Estado == 0 %}
+            <a class="button is-success"
+            href="{% url 'utilizador:validar' pk=utilizador.id %}"><span>&#10004; Validar Utilizador</span></a>
+            {% endif %}
+            {% endif %}
+            {% endif %}
+
+        </center>
+        
+    </div>
+</div>
+
+<div class="modal" id = "modal">
+    <div class="modal-background"></div>
+        <div class="modal-card animation-content"><!---->
+           <section class="modal-card-body is-titleless">
+             <div class="media"><!---->
+                <div class="media-content">
+                  <p>Tem a certeza que quer eliminar o utilizador?</p>
+                </div>
+              </div>
+            </section>
+            <footer class="modal-card-foot">
+              <a class="button" href="" style="text-align:center;text-decoration:none">Cancelar</a>
+              <a class="button is-link is-light is-centered is-danger" style="text-align:center;text-decoration:none" href="/utilizador/util/delete/{{ utilizador.id }}">Apagar</a>
+            </footer>
+          </div>
+      </section>
+    </div>
+  </div>
+<script>
+
+
+    $('btn.btnDelete').on('click', function (e) {
+        e.preventDefault();
+        var id = $(this).closest('tr').data('id');
+        $('#myModal').data('id', id).modal('show');
+    });
+
+    $('#btnDelteYes').click(function () {
+        var id = $('#myModal').data('id');
+        $('[data-id=' + id + ']').remove();
+        $('#myModal').modal('hide');
+    });
+
+
+       $(".modal-button {{co.id.id}}").click(function() {
+          var target = $(this).data("target");
+          $("html").addClass("is-clipped");
+          $(target).addClass("is-active");
+       });
+
+       $(".modal-close").click(function() {
+          $("html").removeClass("is-clipped");
+          $(this).parent().removeClass("is-active");
+       });
+
+    </script>
+{% endblock %}

@@ -1,0 +1,154 @@
+{% extends 'configuracoes/base.html' %}
+{% load widget_tweaks %}
+{% block content %}
+{% if user.TipoUtilizador == "Administrador" %}
+<div class="side">
+    <div class="form_head">
+        ADICIONAR MENU
+    </div>
+    <div class="form_main">
+        <form method="POST">
+        {% csrf_token %}
+            <div class="form-row">
+                <label for="nome">Nome</label>
+                {{form.nome}}
+            </div>
+            <div class="form-row">
+                <label for="data">Dia</label>
+                {{form.data}}
+            </div>
+            <div class="form-row">
+                <label for="precoAluno">Preço aluno</label>
+                {{form.precoAluno}}
+            </div>
+            <div class="form-row">
+                <label for="precoProfessor">Preço professor</label>
+                {{form.precoProfessor}}
+            </div>
+            <br>
+
+            {% if form.errors %}
+                <div id="errors">
+                    <div class="error_message">
+                        {{ form.non_field_errors }}
+                        <ul>
+                            {% for field in form %}
+                                {% if field.errors %}
+                                    <li>{{ field.errors|striptags }}</li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <br>
+            {% endif %}
+
+            <div class="field">
+                <div class="buttons is-centered">
+                    <a class="button is-medium is-link is-light is-danger" style="text-align:left" href="">Cancelar</a>
+                    <button class="button is-medium is-link is-success" style="text-align:right" type="submit">Guardar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endif %}
+
+<div class="main">
+    <nav class="breadcrumb" aria-label="breadcrumbs" style="background-color:#ffff">
+        <ul>
+            <li><a href="/inicial">Início</a></li>
+            <li class="is-active"><a href="">Menus</a></li>
+        </ul>
+    </nav>
+    <h1 class="title" style="text-align:center">Menus</h1>
+    {% if menu %}
+      
+    <table class="table" id="mytable">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Dia</th>
+                <th>Preço aluno</th>
+                <th>Preço professor</th>
+                {% if user.TipoUtilizador == "Administrador" %}
+                    <td style="width: 150px;"><b>Ações</b></td>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+        {% for x in menu %}  
+
+            <tr>
+                <td>{{x.nome}}</td>
+                <td>{{x.data}}</td>
+                <td>{{x.precoAluno}}</td>
+                <td>{{x.precoProfessor}}</td>
+                {% if user.TipoUtilizador == "Administrador" %}
+                    <td>
+                        <a href="./{{x.id}}/edit"><i class="icon is-small fas fa-edit has-text-info"></i></span></a> 
+                        <a class="modal-button {{x.id}}" data-target="#modal-{{x.id}}"><span class="icon "><i class="icon is-small fas fa-times-circle" style="color: #ff3060;"></i></span></a>
+            
+                        <div id="modal-{{x.id}}" class="modal">
+                            <div class="modal-background"></div>
+                            <div class="modal-card">
+                                <section class="modal-card-body">
+                                    <div class="media">
+                                        <div class="media-content">
+                                            <p>Tem a certeza que quer eliminar o <b>menu {{x.nome}}</b>?</p> 
+                                            </p>Ao eliminar irá comprometer todos os registos associados a esta configuração como as <b>ementas dos almoços</b>.</p>
+                                        </div>
+                                    </div>
+                                </section>
+                                <footer class="modal-card-foot">
+                                    <a class="button" href="" style="text-align:center;text-decoration:none">Cancelar</a>
+                                    <a class="button is-link is-light is-centered is-danger" style="text-align:center;text-decoration:none" href="./{{x.id}}/delete">Apagar</a>
+                                </footer>
+                            </div>
+                            <button class="modal-close is-large" aria-label="close"></button>
+                        </div>
+                    </td>
+
+                {% endif %}
+            </tr>
+
+        {% endfor %}
+        </tbody>
+
+    </table> 
+
+    {% else %}
+        <center>Adicione menus</center>
+    {% endif %}
+</div>
+        
+<script>
+
+
+$('btn.btnDelete').on('click', function (e) {
+    e.preventDefault();
+    var id = $(this).closest('tr').data('id');
+    $('#myModal').data('id', id).modal('show');
+  });
+
+  $('#btnDelteYes').click(function () {
+    var id = $('#myModal').data('id');
+    $('[data-id=' + id + ']').remove();
+    $('#myModal').modal('hide');
+  });
+
+
+  $(".modal-button {{co.id.id}}").click(function () {
+    var target = $(this).data("target");
+    $("html").addClass("is-clipped");
+    $(target).addClass("is-active");
+  });
+
+  $(".modal-close").click(function () {
+    $("html").removeClass("is-clipped");
+    $(this).parent().removeClass("is-active");
+  });
+
+</script>
+
+{% endblock %}

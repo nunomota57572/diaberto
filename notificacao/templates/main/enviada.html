@@ -1,0 +1,34 @@
+{% extends 'configuracoes/base.html' %}
+
+{% block content %}
+
+<div class="box" id="conteudo"> 
+    <nav class="breadcrumb" aria-label="breadcrumbs" style="background-color:#ffff">
+        <ul>
+            <li><a href="/inicial">Início</a></li>
+            <li><a href="../">Notificações</a></li>
+            <li class="is-active"><a href="">Enviadas</a></li>
+        </ul>
+    </nav>         
+<center><strong>Notificações Enviadas</strong></center> <br>
+<div class="container" style=" max-height: 700px; overflow: auto">
+{% for n in Notificacao %}
+<div class="box" style="width: 100%;"> 
+
+<strong>Enviada Para:</strong>  {{n.remetenteid}}
+<br>
+<strong>Data de Envio:</strong>   {{n.criadoem}}
+<br>
+<strong>Assunto:</strong>   {{n.assunto}}
+<br>
+<strong>Descrição:</strong>   <br>{{n.descricao}}
+<br>
+</div>
+{% endfor %}
+</div>
+<br>
+<a href='../'  class="button is-medium is-link">Voltar</a>
+
+</div>
+
+{% endblock %}

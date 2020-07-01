@@ -1,0 +1,93 @@
+{% extends 'configuracoes/base.html' %}
+{% load widget_tweaks %}
+{% block content %}
+
+
+<div class="row w-100 ml-2 mb-5">
+<div class="side" id="conteudo" >
+    {% if user.Estado == 1 %}
+         <a href="enviar" class="button is-success modal-button" data-target="#modal" type="button" style="margin-bottom: 14px; margin-right: 20px; text-decoration:none; color: white;"></span><span>Enviar Notificação</span></a>
+         <a href="enviadas" class="button is-info" type="button" style="margin-bottom: 14px; margin-right: 20px; text-decoration:none"></span><span>Notificações Enviadas</span></a>
+         {% endif %}
+</div>
+
+
+        <div class="box col-6 mr-3 mt-5"  >
+            <center><strong>Minhas Notificações</strong></center> <br>
+    <form method="get">
+    <div class="field">
+        <p class="control has-icons-left">
+          <span class="icon is-small is-left">
+            <i class="fas fa-search"></i>
+          </span>
+            {% render_field myFilter.form.assunto class="input" id="myInput" type="search" placeholder="Assunto" %}
+        </p>
+      </div>
+      <div class="field">
+        <p class="control has-icons-left">
+          <span class="icon is-small is-left">
+            <i class="fas fa-search"></i>
+          </span>
+          {% render_field myFilter.form.is_read class="input" id="myInput" type="search" %}
+        </p>
+      </div>
+      <div class="field">
+        <p class="control has-icons-left">
+          <span class="icon is-small is-left">
+            <i class="fas fa-search"></i>
+          </span>
+          {% render_field myFilter.form.autorid class="input" id="myInput" type="search" %}
+        </p>
+      </div>
+      
+      <br>
+      <button type="submit" class="btn btn-primary">
+        <span class="glyphicon glyphicon-search"></span> Procurar
+      </button>
+      
+      </form>
+
+<div style="max-height: 700px; overflow: auto;" >
+{% for n in Notificacao %}
+<a class="box" style="width: 100%" id="{{n.id}}"> 
+  {% if n.is_read == 1 %}
+  <strong style="color:seagreen">Mensagem Lida</strong>
+  <br>
+  {% else %}
+  <strong style="color: red">Mensagem Não Lida</strong>
+  <br>
+  {% endif %}
+  <strong>Enviada Por:</strong>  {{n.autorid}}
+  <br>
+  <strong>Data de Envio:</strong>   {{n.criadoem}}
+  <br>
+  <strong>Assunto:</strong>   {{n.assunto}}
+</a>
+{% endfor %}
+</div> 
+</div>
+    
+   <script>
+       $(document).ready(()=>{
+           teste123 = sessionStorage.getItem("notif")
+           $.ajax({
+        url: getBaseUrl() + "notificacao/ajax/conteudo",
+        data: {
+            'id': teste123
+        },
+        success: function(data) {
+            $("#conteudo").html(data); // replace the contents
+        },
+        
+        });
+        function getBaseUrl() {
+        var pathArray = location.href.split('/');
+        var protocol = pathArray[0];
+        var host = pathArray[2];
+        var url = protocol + '//' + host + '/';
+        return url;
+       }
+       })
+
+   </script>
+{% endblock %}

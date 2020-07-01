@@ -1,0 +1,149 @@
+{% extends 'configuracoes/base.html' %}
+{% load widget_tweaks %}
+{% block content %}
+
+<!-- "atividade": atividade, "sessao": sessao, "inscricao_atividades": inscricao_atividades}  -->
+
+{% if user.TipoUtilizador == "Participante" %}
+    <div class="side">
+        <aside class="menu">
+            <p class="menu-label">
+                <h5>Filtros Atividades</h5>
+            </p>
+
+            <p class="menu-label"> FILTROS NOME </p>
+            <form method="get">
+            <div class="field">
+                <p class="control has-icons-left">
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-search"></i>
+                    </span>
+                    {% render_field myFilter.form.Nome_actividade class="input" id="myInput" type="search" %}
+                </p>
+            </div>
+
+            <p class="menu-label"> FILTROS UNIDADE ORGANICA </p>
+            <div class="field">
+                <p class="control has-icons-left">
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-search"></i>
+                    </span>
+                    {% render_field myFilter.form.EntidadeOrganizacional class="input" id="myInput" type="search" %}
+                </p>
+            </div>
+
+            <p class="menu-label"> FILTROS DEPARTAMENTO </p>
+            <div class="field">
+                <p class="control has-icons-left">
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-search"></i>
+                    </span>
+                    {% render_field myFilter.form.Departamento class="input" id="myInput" type="search" %}
+                </p>
+            </div>
+
+            <p class="menu-label"> FILTROS CAMPUS </p>
+            <div class="field">
+                <p class="control has-icons-left">
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-search"></i>
+                    </span>
+                    {% render_field myFilter.form.Campus class="input" id="myInput" type="search" %}
+                </p>
+            </div>
+
+            <p class="menu-label"> FILTROS TIPO DE ATIVIDADE </p>
+            <div class="field">
+                <p class="control has-icons-left">
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-search"></i>
+                    </span>
+                    {% render_field myFilter.form.Tipodeatividade class="input" id="myInput" type="search" %}
+                </p>
+            </div>
+
+            <br>
+            <button type="submit" class="btn btn-primary">
+            <span class="glyphicon glyphicon-search"></span> Procurar
+            </button>
+            </form>
+        </aside>
+    </div>
+{% endif %}
+
+
+
+
+
+
+<div class="main">
+    <a href="/inicial">Inicio</a> / Atividades<br><br>
+        <h1 class="title" style="text-align:center">As suas Atividades</h1>
+            <div class="row">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th><center>Nome da Atividade</center></th>
+                            <th><center>Campus</center></th>
+                            <th><center>Inicio</center></th>
+                            <th><center>Duração (mins)</center></th>
+                            <th><center>Espaço</center></th>
+                            <th><center>Ações</center></th>
+                        </tr>
+                        
+                        {% for a in atividade %}
+                            {% for s in sessao %}
+                                {% if a.id == s.Atividade.id %}    
+                                    {% for ia in inscricao_atividades %}
+                                        {% if s.id == ia.sessao.id %}
+                                            <tr>
+                                                <th><center><a href="../ver_atividadeind/{{a.id}}" , class="hoverable" style="color:blue">{{ a.Nome_actividade }}</a></center></th>
+                                                <th><center>{{ a.Nome_actividade }}</center></th>
+                                                <th><center>{{ a.Campus }}</center></th>
+                                                <th><center>{{ s.Inicio }}</center></th>
+                                                <th><center>{{ s.Duraçao }}</center></th>
+                                                <th><center>{{ s.Espaço }}</center></th>
+                                                <th>
+                                                    <center><a class="button is-danger modal-button" onclick="deleteA('{{ia.id}}','{{a.id}}')" data-target="#modal" type="button"
+                                                        style="margin-bottom: 14px; margin-right: 20px; text-decoration:none; color: white;">
+                                                        <span class="icon"><i class="icon is-medium fas fa-times-circle"></i>
+                                                        </span>
+                                                        <span>Remover</span></a> </center>
+                                                </th>
+                                            </tr>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+                    </thead>
+                </table>
+            </div>
+            <center><a class="button is-success" href="/inscricoes/selecionar_atividades">
+                <span class="icon"><i class="fas fa-plus"></i>
+                </span>
+                <span>Adicionar Atividades</span></a></center>
+</div>
+
+<script>
+    function deleteA(iaid,aid){
+        $.ajax({
+        url: getBaseUrl() + "inscricoes/ajax/deleteA",
+        data: {
+            'iaid': iaid,
+            'aid': aid
+        },
+        success:function(data){
+            window.location.reload()
+        }
+        });
+    }
+    function getBaseUrl() {
+    var pathArray = location.href.split('/');
+    var protocol = pathArray[0];
+    var host = pathArray[2];
+    var url = protocol + '//' + host + '/';
+    return url;
+    }
+</script>
+{% endblock %}

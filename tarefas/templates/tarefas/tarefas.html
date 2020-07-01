@@ -1,0 +1,193 @@
+{% extends 'configuracoes/base.html' %}
+{% load widget_tweaks %}
+
+{% block content %}
+
+<div class="side">
+  <aside class="menu">
+    <p class="menu-label">
+      FILTROS TAREFA
+    </p>
+
+    <form method="get">
+      <div class="field">
+        <p class="control has-icons-left">
+          <span class="icon is-small is-left">
+            <i class="fas fa-search"></i>
+          </span>
+            {% render_field filter.form.Nome class="input" id="myInput" type="search" placeholder="Nome de Tarefa" %}
+        </p>
+      </div>
+
+    <div class="field">
+      <p class="control has-icons-left">
+        <span class="icon is-small is-left">
+          <i class="fas fa-search"></i>
+        </span>
+        {% render_field filter.form.Tipo class="input" type="search" placeholder="Tipo de Tarefa"%}
+
+      </p>
+    </div>
+  {% if user.is_authenticated and user.TipoUtilizador == 'Coordenador' %}
+    <p class="menu-label">
+      FILTROS DE COLABORADOR
+    </p>
+
+      <div class="field">
+        <p class="control has-icons-left">
+          <span class="icon is-small is-left">
+            <i class="fas fa-search"></i>
+          </span>
+          {% render_field filter.form.UtilizadorID2 class="input" type="search"  %}
+        </p>
+      </div>
+    {%endif%}
+    <button type="submit" class="btn btn-primary">
+      <span class="glyphicon glyphicon-search"></span> Search
+    </button>
+  </form>
+
+  </aside>
+</div>
+
+<div class="main">
+  <nav class="breadcrumb" aria-label="breadcrumbs" style="background-color:#ffff">
+    <ul>
+      <li><a href="/inicial">Início</a></li>
+      <li class="is-active"><a href="#" aria-current="page">Tarefas</a></li>
+    </ul>
+  </nav>
+    <h1 class="title" style="text-align:center">Tarefas</h1>
+    {% if user.is_authenticated and user.TipoUtilizador == 'Coordenador' %}
+    <a href="new_tarefa" class="button is-success is-outlined " type="button" style="margin-bottom: 14px; margin-right: 20px; text-decoration:none">
+      <span class="icon"><i class="fas fa-plus"></i>
+      </span>
+      <span>Adicionar Tarefa</span> <!----></a>
+      {% endif %}
+
+        <div class="row">
+  	        <table class="table" id="mytable">
+              <thead>
+  	            <tr>
+  	                <th>Horário</th>
+  	                <th>Nome</th>
+  	                <th><abbr title="Origem - salas / edificio">Origem</abbr></th>
+                    <th><abbr title="Destino - salas / edificio">Destino</abbr></th>
+  	                <th>Tipo</th>
+  	                {% if user.is_authenticated and user.TipoUtilizador == 'Coordenador' %}
+  	                <th>Atribuição</th>
+                    <th><center>Acções</center></th>
+                    {% endif %}
+  	            </tr>
+              </thead>
+              {% for taf in filter.qs %}
+  	            <tr>
+                    <td><center><p>{{taf.Dia}}</p>{{taf.HorasInicio}} - {{taf.HorasFim}}</center></td>
+                    <td><a  class="button is-outlined is-fullwidth"style="text-decoration:none" href="tarefa/{{taf.id}}" >
+                        {{taf.Nome|truncatewords:4}}
+                        </a>
+                      </td>
+                    <td>{% if taf.Origem %}{{taf.Origem}}{%else%}-{%endif%}</td>
+                    <td>{% if taf.Destino %}{{taf.Destino}}{%else%}-{%endif%}</td>
+                    <td>{% if taf.Tipo == 'Atividade' %}
+                          {{taf.Tipo}}: <p>{{taf.Nome_actividade.Nome_actividade|truncatewords:4}}</p>
+                        {%elif taf.Tipo == 'Acompanhar participantes' %}
+                          Acompanhar <p></p>participantes
+                        {%else%}
+                          Outra
+                        {%endif%}</td>
+                    {% if user.is_authenticated and user.TipoUtilizador == 'Coordenador' %}
+                      {% if not taf.UtilizadorID2 %}
+                      <td><a style="width: 7rem;height: 1.75rem;font-size: medium;text-decoration:none;" class="button is-warning is-small" href="atribuir_colab/{{taf.id}}/update">
+                      Não Atribuida</a></td>
+                      {% else %}
+                      <td><a style="width: 7rem;height: 1.75rem;font-size: medium;text-decoration:none;" class="button is-success is-small is-white" href="atribuir_colab/{{taf.id}}/update">
+                      {{taf.UtilizadorID2}}</a></td>
+                      {% endif %}
+                      <td><center>
+                          <abbr title="Editar" style="text-decoration:none"><a style="font-size: large;text-decoration:none" class="pt-5" href="tarefa/{{taf.id}}/update">
+                            <i class="icon is-medium fas fa-edit has-text-info"></i>
+                          </a></abbr>
+                          <abbr title="Apagar" style="text-decoration:none"><a style="font-size: large;text-decoration:none" class="pt-5 modal-button" data-target="#modal">
+                            <i class="icon is-medium fas fa-times-circle has-text-danger"></i>
+                          </a></abbr>
+
+
+
+                          <div class="modal" id = "modal">
+                            <div class="modal-background"></div>
+                                <div class="modal-card animation-content"><!---->
+                                   <section class="modal-card-body is-titleless">
+                                     <div class="media"><!---->
+                                        <div class="media-content">
+                                          <p>Tem a certeza que quer eliminar a tarefa?</p>
+                                        </div>
+                                      </div>
+                                    </section>
+                                    <footer class="modal-card-foot">
+                                      <a class="button" href="/tarefas" style="text-align:center;text-decoration:none">Cancelar</a>
+                                      <a class="button is-link is-light is-centered is-danger" style="text-align:center;text-decoration:none" href="delete_tarefa/{{taf.id}}">Apagar</a>
+                                    </footer>
+                                  </div>
+                              </section>
+                            </div>
+                          </div>
+
+
+
+                          <!-- <div id = "modal" class = "modal">
+                                <div class = "modal-background"></div>
+                                 <div class = "modal-card">
+                                   <section class="modal-card-body">
+                                     <center>
+                                       <table>
+                                         <thead>
+                                          <th><center>pretente mesmo eliminar</center></th>
+                                        </thead>
+                                       </table>
+                                       <a class="button is-medium is-link is-light is-danger" style="text-align:left;text-decoration:none" href="delete_tarefa/{{taf.id}}">delete</a>
+                                    </center>
+                                    </section>
+                                 </div>
+                                 <button class = "modal-close is-large" aria-label = "close"></button>
+                              </div> -->
+                            </center>
+                      </td>
+
+                    {% endif %}
+
+                </tr>
+
+  	        {% endfor %}
+  	    </table>
+
+        <script>
+
+
+        $('btn.btnDelete').on('click', function (e) {
+            e.preventDefault();
+            var id = $(this).closest('tr').data('id');
+            $('#myModal').data('id', id).modal('show');
+        });
+
+        $('#btnDelteYes').click(function () {
+            var id = $('#myModal').data('id');
+            $('[data-id=' + id + ']').remove();
+            $('#myModal').modal('hide');
+        });
+
+
+           $(".modal-button {{co.id.id}}").click(function() {
+              var target = $(this).data("target");
+              $("html").addClass("is-clipped");
+              $(target).addClass("is-active");
+           });
+
+           $(".modal-close").click(function() {
+              $("html").removeClass("is-clipped");
+              $(this).parent().removeClass("is-active");
+           });
+
+        </script>
+
+{% endblock %}

@@ -1,0 +1,17 @@
+
+    <tr>
+      <td>{{taf.Dia|date:"d F"}}  {{taf.HorasInicio|date:"H:i"}} - {{taf.HorasFim|date:"H:i"}}</td>
+
+      <td>{{taf.Origem}}</td>
+
+      <td>{{taf.Destino}}</td>
+
+      <td>{{taf.Grupos}}</td>
+
+      {% if taf.Concluida == 0 %}
+        <td>Pendente</td>
+        <td><a class="btn btn-primary" style="float:right" href="{% url 'tarefas:concluir_tarefa' pk=taf.id %}">Concluir</a></td>
+      {%else%}
+        <td>Concluida</td>
+      {% endif %}
+    </tr>

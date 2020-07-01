@@ -1,0 +1,254 @@
+{% extends 'configuracoes/base.html' %}
+{% load widget_tweaks %}
+{% block content %}
+
+{% if user.TipoUtilizador != "Participante" %}
+  <div class="side">
+    <aside class="menu">
+      <p class="menu-label">
+      <h5>Filtros Inscrições</h5>
+      </p>
+
+      <p class="menu-label">
+        FILTROS NOME
+      </p>
+      <form method="get">
+        <div class="field">
+          <p class="control has-icons-left">
+            <span class="icon is-small is-left">
+              <i class="fas fa-search"></i>
+            </span>
+            {% render_field myFilter.form.Nome class="input" id="myInput" type="search" %}
+          </p>
+        </div>
+
+        <p class="menu-label">
+          FILTROS TIPO DE VISITANTE
+        </p>
+        <div class="field">
+          <p class="control has-icons-left">
+            <span class="icon is-small is-left">
+              <i class="fas fa-search"></i>
+            </span>
+            {% render_field myFilter.form.Tipo_de_Visitante class="input" id="myInput" type="search" %}
+          </p>
+        </div>
+
+        <p class="menu-label">
+          FILTROS ESCOLA
+        </p>
+        <div class="field">
+          <p class="control has-icons-left">
+            <span class="icon is-small is-left">
+              <i class="fas fa-search"></i>
+            </span>
+            {% render_field myFilter.form.Escola class="input" id="myInput" type="search" %}
+          </p>
+        </div>
+
+        <p class="menu-label">
+          FILTROS DIA
+        </p>
+        <div class="field">
+          <p class="control has-icons-left">
+            <span class="icon is-small is-left">
+              <i class="fas fa-search"></i>
+            </span>
+            {% render_field myFilter.form.data class="input" id="myInput" type="search" %}
+          </p>
+        </div>
+
+        <p class="menu-label">
+          FILTROS POR TRANSPORTE
+        </p>
+        <div class="field">
+          <p class="control has-icons-left">
+            <span class="icon is-small is-left">
+              <i class="fas fa-search"></i>
+            </span>
+            {% render_field myFilter.form.Precisa_Transporte class="input" id="myInput" type="search" %}
+          </p>
+        </div>
+
+        <p class="menu-label">
+          FILTROS POR REFEIÇÃO
+        </p>
+        <div class="field">
+          <p class="control has-icons-left">
+            <span class="icon is-small is-left">
+              <i class="fas fa-search"></i>
+            </span>
+            {% render_field myFilter.form.Refeicao class="input" id="myInput" type="search" %}
+          </p>
+        </div>
+
+        <br>
+        <button type="submit" class="btn btn-primary">
+          <span class="glyphicon glyphicon-search"></span> Procurar
+        </button>
+      </form>
+    </aside>
+  </div>
+{% endif %}
+
+<div class="main">
+    <nav class="breadcrumb" aria-label="breadcrumbs" style="background-color:#ffff">
+        <ul>
+            <li><a href="/inicial">Início</a></li>
+            <li class="is-active"><a href="">Inscrições</a></li>
+        </ul>
+    </nav>
+  {% if user.TipoUtilizador == "Participante" %}
+      {% for i in inscricao %}
+        {% if i.UtilizadorID.id == user.id %}
+        <h1 class="title" style="text-align:center">Inscrição</h1>
+          <div class = "box" >
+            <div class="form-row">
+        <div class="form-group col-md-4">
+          <center><label>Nome</label><br>
+            {{i.Nome}}</center>
+        </div>
+        <div class="form-group col-md-4">
+          <center><label>Tipo de Visitante</label><br>
+            {{i.Tipo_de_Visitante}}</center>
+        </div>
+        <div class="form-group col-md-4">
+          <center><label>Numero de Pessoas</label><br>
+            {{i.Nr_Pessoas}}</center>
+        </div>
+
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col-md-4">
+          <center><label>Escola</label><br>
+            {{i.Escola}}</center>
+        </div>
+        <div class="form-group col-md-4">
+          <center><label>Precisa de Transporte</label><br>
+            {% if i.Precisa_Transporte == "True" %}
+              Sim
+            {%else%}
+              Não
+            {%endif%}</center>
+        </div>
+
+        <div class="form-group col-md-4">
+          <center><label>Observações</label><br>
+            {% if i.Observacoes %}
+            {{i.Observacoes}}
+            {% else %}
+            Nenhuma
+            {% endif %}</center>
+        </div>
+      </div>
+
+
+      <div class="form-row">
+        <div class="form-group col-md-4">
+          <center><label>Data do Dia Aberto</label><br>
+            {{i.data}}</center>
+        </div>
+        <div class="form-group col-md-4">
+          <center><label>Horario de Inicio </label><br>
+            {{i.HorarioInicio}}</center>
+        </div>
+        <div class="form-group col-md-4">
+          <center><label>Horario de Fim</label><br>
+            {{i.HorarioFim}}</center>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col-md-4">
+          <center><label>Refeicao</label><br>
+            {{i.Refeicao}}</center>
+        </div>
+        <div style="word-break: break-word" class="form-group col-md-4">
+          <center><label>Nr. Menus Alunos</label><br>
+            {{i.Quantos_Alunos}}</center>
+        </div>
+        {% if i.Quantos_Professores %}
+        <div style="word-break: break-word" class="form-group col-md-4">
+          <center><label>Nr. Menu Professores</label><br>
+            {{i.Quantos_Professores}}</center>
+        </div>
+        {%endif%}
+      </div>
+
+      <center>
+        <li class="dropdown">
+          <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown"><label>Actividades Inscritas</label></a>
+          <div class="dropdown-menu" arial-labelleby="navbarDropdown">
+            <div class="dropdown-content">
+              {% for s in sess %}
+              <a class="dropdown-item" href="../ver_atividadeind/{{s.sessao.Atividade.id}}" style="text-align: center;">{{s.sessao.Atividade.Nome_actividade}}</a>
+              {% endfor %}
+            </div>
+          </div>
+        </li></center>
+
+            <center>
+              <a href="/inscricoes/{{i.id}}/update/" class="button is-info" type="button"
+              style="margin-bottom: 14px; margin-right: 20px; text-decoration:none">
+              <span class="icon"><i class="icon is-medium fas fa-edit"></i>
+              </span>
+              <span>Editar</span></a>
+              <a class="button is-success" href="/inscricoes/selecionar_atividades">
+              <span class="icon"><i class="fas fa-plus"></i>
+              </span>
+              <span>Adicionar Atividades</span></a>
+              <a class="button is-danger modal-button" data-target="#modal" type="button"
+              style="margin-bottom: 14px; margin-right: 20px; text-decoration:none; color: white;" href="../delete_inscricao/{{i.id}}">
+              <span class="icon"><i class="icon is-medium fas fa-times-circle"></i>
+              </span>
+              <span>Apagar</span></a></div></center>
+          </div>
+        {% endif %}
+      {% endfor %}
+      {% if not inscricao%}
+        <a class="button is-success" href="/inscricoes/criar_inscricao">
+          <span class="icon"><i class="fas fa-plus"></i>
+          </span>
+          <span>Nova Inscricao</span></a>
+      {% endif %}
+  {% else %}
+
+  <h1 class="title" style="text-align:center">Inscrições</h1>
+    <div class="row">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Tipo de Visitante</th>
+            <th>Número de Pessoas</th>
+            <th>Transporte</th>
+            <th>Refeição</th>
+          </tr>
+          {% for ins in inscricao %}
+          <tr>
+            <th><a href="../ver_inscricao/{{ins.id}}" , class="hoverable" style="color:blue">{{ins.Nome}}</a></th>
+            <th>{{ins.Tipo_de_Visitante}}</th>
+            <th>{{ins.Nr_Pessoas}}</th>
+            <th>{{ins.Precisa_Transporte}}</th>
+            <th>{{ins.Refeicao}}</th>
+          </tr>
+        </thead>
+        {% endfor %}
+      </table>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}
+
+
+
+
+
+
+<!--
+--------------------------------------------------
+--------------------------------------------------
+--------------------------------------------------
+--------------------------------------------------
+ -->

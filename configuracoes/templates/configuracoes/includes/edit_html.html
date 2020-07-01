@@ -1,0 +1,22 @@
+{% extends 'configuracoes/base.html' %}
+
+{% block content %}
+<div class="main">
+    <form method="POST">
+    {% csrf_token %}
+
+    	{% block edit_content %}
+		{% endblock %}
+
+        <br>
+		<div class="error_message">{{ form.non_field_errors }}</div>
+        <center>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <button type="submit" class="btn btn-danger">Cancelar</button>
+        </center>
+    </form>
+</div>
+{% endblock %}
+
+
+

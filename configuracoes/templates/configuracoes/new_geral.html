@@ -1,0 +1,51 @@
+{% extends 'configuracoes/base.html' %}
+
+{% block content %}
+
+<div class="main">
+    <nav class="breadcrumb" aria-label="breadcrumbs" style="background-color:#ffff">
+        <ul>
+            <li><a href="/inicial">Início</a></li>
+            <li><a href="./">Configurações gerais</a></li>
+            <li class="is-active"><a href="">Criar configurações gerais</a></li>
+        </ul>
+    </nav>
+    <ul class="steps is-narrow is-medium is-centered has-content-centered">
+        <li class="steps-segment"  style="text-align:center">
+            <span class="step-title">Criar Configurações gerais</span>
+        </li>
+    </ul>
+
+    <form method="POST" id="myForm">
+        {% csrf_token %}
+        <div class="column is-offset-3 is-6">
+
+            {% include 'configuracoes/includes/geral_form.html' %}
+
+            {% if form.errors %}
+            <br>
+                <div id="errors">
+                    <div class="error_message">
+                        {{ form.non_field_errors }}
+                        <ul>
+                            {% for field in form %}
+                                {% if field.errors %}
+                                    <li>{{ field.errors|striptags }}</li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            {% endif %}
+            <br>
+            <div class="field">
+                <div class="buttons is-centered">
+                <a class="button is-medium is-link is-light is-danger" style="text-align:left" href="../">Cancelar</a>
+                <button class="button is-medium is-link is-success" style="text-align:right" type="submit">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

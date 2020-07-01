@@ -1,0 +1,114 @@
+{% extends 'configuracoes/base.html' %}
+{% load widget_tweaks %}
+{% block content %}
+
+<div class="main">
+    <nav class="breadcrumb" aria-label="breadcrumbs" style="background-color:#ffff">
+        <ul>
+            <li><a href="/inicial">Início</a></li>
+            <li class="is-active"><a href="">Inscrição</a></li>
+        </ul>
+    </nav>
+    <h1 class="title" style="text-align:center">Editar Inscrição</h1>
+
+    <div class="form_main">
+        <form method="POST">
+        {% csrf_token %}
+            <div class="form-row">
+                <label for="Nome">Nome</label>
+                {{form.Nome}}
+            </div>
+            <div class="form-row">
+                <label for="Tipo_de_Visitante">Tipo de Visitante</label>
+                {{form.Tipo_de_Visitante}}
+            </div>
+            <div class="form-row">
+                <label for="Nr_Pessoas">Número de Pessoas</label>
+                {{form.Nr_Pessoas}}
+            </div>
+            <div class="form-row">
+                <label for="Escola">Escola</label>
+                {{form.Escola}}
+            </div>
+            <div class="form-row">
+                <label for="HorarioInicio">Dia</label>
+                {{form.data}}
+            </div>
+            <div class="form-row">
+                <label for="HorarioInicio">Horário Partida</label>
+                {{form.HorarioInicio}}
+            </div>
+            <div class="form-row">
+                <label for="HorarioFim">Horário Fim</label>
+                {{form.HorarioFim}}
+            </div>
+            <div class="form-row">
+                <label for="Precisa_Transporte">Precisa de transporte entre os campus?</label>
+                {{form.Precisa_Transporte}}
+            </div>
+            <div class="form-row" id = "ref">
+                <label for="Refeicao">Pretende almoçar no campus?</label>
+                {{form.Refeicao}}
+            </div>
+            <div class="form-row" id = "Al">
+                <label for="Quantos_Alunos">Quantos Alunos</label>
+                {{form.Quantos_Alunos}}
+            </div>
+            <div class="form-row" id ="Pr">
+                <label for="Quantos_Professores">Quantos Professores</label>
+                {{form.Quantos_Professores}}
+            </div>
+            <div class="form-row">
+                <label for="Observacoes">Observações</label>
+                {{form.Observacoes}}
+            </div>
+            <br>
+
+            {% if form.errors %}
+                <div id="errors">
+                    <div class="error_message">
+                        {{ form.non_field_errors }}
+                        <ul>
+                            {% for field in form %}
+                                {% if field.errors %}
+                                    <li>{{ field.errors|striptags }}</li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <br>
+            {% endif %}
+
+            <div class="field">
+                <div class="buttons is-centered">
+                    <a class="button is-medium is-link is-light is-danger" style="text-align:left" href="/inscricoes/inscricao">Cancelar</a>
+                    <button class="button is-medium is-link is-success" style="text-align:right" type="submit">Guardar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    $(document).ready(()=>{
+        $("#Al").hide()
+        $("#Pr").hide()
+    } )
+    $("#id_Refeicao").change(function(index, value){
+        console.log($(this).val())
+        if($(this).val()=== "Sim"){
+            if($("#id_Tipo_de_Visitante").val()==="Grupo Escolar")
+                $("#Pr").show()
+            $("#Al").show()
+        }
+        else{
+            $("#Al").hide()
+            $("#Pr").hide()
+            $("#id_Quantos_Alunos").val("0")
+            $("#id_Quantos_Professores").val("0")
+        }
+    })
+
+</script>
+{% endblock %}

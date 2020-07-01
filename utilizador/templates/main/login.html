@@ -1,0 +1,44 @@
+
+{% extends 'configuracoes/base.html' %}
+
+{% block content %}
+<div class="main">
+    <nav class="breadcrumb" aria-label="breadcrumbs" style="background-color:#ffff">
+        <ul>
+            <li><a href="/inicial">Início</a></li>
+            <li class="is-active"><a href="">Login</a></li>
+        </ul>
+    </nav>
+    <form method="POST">
+    {% csrf_token %}
+        <div class="box">
+            <center><h2>Login</h2></center>
+            <hr>
+            <br>
+    <form method="POST">
+        {% csrf_token %}
+        <center>
+        {{form.as_p}}
+        </center>
+        <br>
+        <div class="field">
+            <div class="buttons is-centered">
+              <a class="button is-medium is-link is-light is-danger" style="text-align:left;text-decoration:none" href="/inicial">Cancelar</a>
+              <button class="button is-medium is-link is-success" style="text-align:right" type="submit">Login</button>
+            </div>
+          </div>
+        <center>
+            <p>Se não possui uma conta, faça <a href="/utilizador/register" target="blank"><strong>Registo</strong></a>.</p>
+            <p><a class='m-auto' href="{% url 'password_reset' %}">Esqueceu-se da Password?</a></p>
+        </center>
+    </form>
+
+    
+            
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+
+

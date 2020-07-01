@@ -1,0 +1,228 @@
+{% extends 'configuracoes/base.html' %}
+
+{% block content %}
+
+
+
+<div class="main">
+  <nav class="breadcrumb" aria-label="breadcrumbs" style="background-color:#ffff">
+    <ul>
+      <li><a href="/inicial">Início</a></li>
+      <li><a href="/tarefas">Tarefa</a></li>
+      <li class="is-active"><a href="#" aria-current="page">{% if tarefa.Nome %}Editar {%else%}Adicionar {% endif %}</a></li>
+    </ul>
+  </nav>
+
+
+  <br><br>
+  <ul class="steps is-narrow is-medium is-centered has-content-centered">
+    <li class="steps-segment"  style="text-align:center">
+      <a href="#" class="has-text-dark">
+        <span class="steps-marker">
+          <span class="icon">
+            <i class="far fa-id-card"></i>
+          </span>
+        </span>
+        <div class="steps-content">
+          <span class="step-title">{% if tarefa.Nome %}Editar {%else%}Adicionar {% endif %}Tarefa</span>
+        </div>
+      </a>
+    </li>
+  </ul>
+
+  <form method="POST" id="myForm">
+      {% csrf_token %}
+      <div class="error_message" style="color: #ff0000; text-align: center">{{ form.non_field_errors }}</div>
+
+    <div class="column is-offset-3 is-6">
+
+      <div class="field">
+        <label class="label" for="id_Nome">Nome</label>
+        <div class="control">
+          <input class="input" value="{{tarefa.Nome}}" type="text" name="Nome" maxlength="200" required="" id="id_Nome"></input>
+        </div>
+      </div>
+      <br>
+
+    <div class="columns">
+      <div class="column">
+        <div class="field">
+          <label class="label" for="id_Nome">Dia</label>
+          <div class="control" style="text-align:center">
+            <div class="select">
+             <select name="Dia" id="id_Dia" required="">
+               {% if not dia.id %}
+               <option value="" selected>Escolha um Dia</option>
+               {% endif %}
+               {% for actividade in dia %}
+               <option value="{{actividade.id}}"{% if tarefa.Dia.id == actividade.id %}selected{%endif%}>{{actividade.data}}</option>
+               {% endfor %}
+             </select>
+           </div>
+         </div>
+       </div>
+      </div>
+
+      <div class="column">
+        <div class="field">
+          <label for="id_HorasInicio" class="label" style="text-align:left">Horário de Início</label>
+          <div class="control">
+            <input class="input" type="time" value="{{tarefa.HorasInicio}}" id="id_HorasInicio" min="09:00" max="18:00" name="HorasInicio" required="">
+          </div>
+        </div>
+      </div>
+      <div class="column">
+        <div class="field">
+          <label class="label" for="id_HorasFim" style="text-align:left">Horário de Fim</label>
+          <div class="control">
+            <input class="input" type="time" value="{{tarefa.HorasFim}}" id="id_HorasFim" min="09:00" max="18:00" name="HorasFim" required="">
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="field">
+      <label class="label" for="id_Grupos">Numero de Grupos</label>
+      <div class="control">
+        <input class="input" value="{{tarefa.Grupos}}" type="number" placeholder="" required="" name="Grupos" id="id_Grupos">
+      </div>
+    </div>
+    <br>
+
+   <div class="block">
+      <label class="label" >Tipo de Tarefa</label>
+      <div class="control-label" style="text-align:center">
+        {% if tarefa.Tipo == "Atividade" %}
+        <label class="control-label" for="Atividade" style="margin-right: 1rem;" >
+          <input type="radio" name="Tipo" id="Atividade" value="Atividade" {% if tarefa.Tipo == "Atividade" %}checked{%endif%}>
+          <span class="check"></span>
+          <span class="control-label"> Atividade </span>
+        </label>
+        {% endif %}
+        {% if tarefa.Tipo == "Acompanhar participantes" %}
+        <label class="control-label" for="Acompanhar participantes" style="margin-right: 1rem;">
+          <input type="radio" name="Tipo" id="Acompanhar participantes" value="Acompanhar participantes" {% if tarefa.Tipo == "Acompanhar participantes" %}checked{%endif%}>
+          <span class="check"></span>
+          <span class="control-label"> Acompanhar participantes </span>
+        </label>
+        {% endif %}
+        {% if tarefa.Tipo == "Outro" %}
+        <label class="control-label" for="Outro" style="margin-right: 1rem;">
+          <input type="radio" name="Tipo" id="Outro" value="Outro" {% if tarefa.Tipo == "Outro" %}checked{%endif%}>
+          <span class="check"></span>
+          <span class="control-label"> Outro </span>
+        </label>
+        {% endif %}
+        {% if not tarefa.Tipo %}
+        <label class="control-label" for="Atividade" style="margin-right: 1rem;" >
+          <input type="radio" name="Tipo" id="Atividade" value="Atividade" {% if tarefa.Tipo == "Atividade" %}checked{%endif%}>
+          <span class="check"></span>
+          <span class="control-label"> Atividade </span>
+        </label>
+        <label class="control-label" for="Acompanhar participantes" style="margin-right: 1rem;">
+          <input type="radio" name="Tipo" id="Acompanhar participantes" value="Acompanhar participantes" {% if tarefa.Tipo == "Acompanhar participantes" %}checked{%endif%}>
+          <span class="check"></span>
+          <span class="control-label"> Acompanhar participantes </span>
+        </label>
+        <label class="control-label" for="Outro" style="margin-right: 1rem;">
+          <input type="radio" name="Tipo" id="Outro" value="Outro" {% if tarefa.Tipo == "Outro" %}checked{%endif%}>
+          <span class="check"></span>
+          <span class="control-label"> Outro </span>
+        </label>
+        {% endif %}
+      </div>
+    </div>
+
+
+  <div class="block">
+    <div class="columns diogo" id="id1">
+      <div class="column">
+        <div class="field">
+          <label class="label" for="id_Origem" style="text-align:left">Origem</label>
+          <div class="control has-icons-left has-icons-right">
+            <input value="{{tarefa.Origem}}" class="input" name="Origem" maxlength="200" id="id_Origem">
+            <span class="icon is-small is-left">
+              <i class="fas fa-map-marker-alt"></i>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="column">
+        <div class="field">
+          <label class="label" for="id_Destino" style="text-align:left">Destino</label>
+          <div class="control has-icons-left has-icons-right">
+            <input class="input" value="{{tarefa.Destino}}" name="Destino" maxlength="200" id="id_Destino">
+            <span class="icon is-small is-left">
+              <i class="fas fa-map-marker-alt"></i>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="field diogo" id="id2">
+      <label class="label" for="id_Descricao" style="text-align:left">Descrição da Tarefa</label>
+      <textarea class="textarea" type="text" name="Descricao" placeholder="Descrição">{{tarefa.Descricao}}</textarea>
+    </div>
+
+     <div class="field diogo" id="id3" >
+       <div class="control" style="text-align:center">
+         <div class="select is-rounded">
+           <select name="Nome_actividade" id="id_Nome_actividade">
+             {% if not tarefa.Nome_actividade.id %}
+             <option value="" selected>Escolha uma actividade</option>
+             {% endif %}
+             {% for actividade in actall %}
+             <option value="{{actividade.id}}"{% if tarefa.Nome_actividade.id == actividade.id %}selected{%endif%}>{{actividade.Nome_actividade}}</option>
+             {% endfor %}
+           </select>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+      <div class="field">
+        <div class="buttons is-centered">
+          <a class="button is-medium is-link is-light is-danger" style="text-align:left;text-decoration:none" href="/tarefas">Cancelar</a>
+          <button class="button is-medium is-link is-success" style="text-align:right" type="submit">Gravar</button>
+        </div>
+      </div>
+
+    </div>
+  </form>
+  </div>
+
+<script>
+$(document).ready(() => {
+        $(".diogo").hide()
+
+        $("input[type=radio]").each((index,value) =>{
+          if ($(value).val() === "Atividade" && value.checked) {
+            $(".diogo").hide()
+            $("#id3").show()
+          }
+          else if ($(value).val() === "Acompanhar participantes" && value.checked) {
+            $(".diogo").hide()
+            $("#id1").show()
+          }
+          else if ($(value).val() === "Outro" && value.checked){
+            $(".diogo").hide()
+            $("#id2").show()
+          }
+        })
+        $("input[type=radio]").on('click', function(index,value){
+          if ($(this).val() === "Atividade") {
+            $(".diogo").hide()
+            $("#id3").show()
+          }
+          else if ($(this).val() === "Acompanhar participantes") {
+            $(".diogo").hide()
+            $("#id1").show()
+          }
+          else if ($(this).val() === "Outro"){
+            $(".diogo").hide()
+            $("#id2").show()
+          }
+        })
+    })
+</script>
+{% endblock %}

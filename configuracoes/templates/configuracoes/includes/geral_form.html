@@ -1,0 +1,54 @@
+
+        <div class="form-row">
+            <div class="form-group col-md-5">
+                <label for="endereçoPaginaWeb">Endereço da página</label>
+                {{ form.endereçoPaginaWeb }}
+            </div>
+            <div class="form-group col-md-5">
+                <label for="emailDiaAberto">Email</label>
+                {{ form.emailDiaAberto }}
+            </div>
+            <div class="form-group col-md-2">
+                <label for="ano">Ano</label>
+                {{ form.ano }}
+            </div>
+        </div>
+        <label for="dataPropostasAtividades">Propor atividades</label>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="dataPropostasAtividadesIncio">Início</label>
+                
+                <input type="date" id="dataPropostasAtividadesIncio" name="dataPropostasAtividadesIncio" class="form-control" value="{{ act1.dataPropostasAtividadesIncio|date:'Y-m-d' }}">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="dataPorpostaAtividadesFim">Fim</label>
+                <input type="date" id="dataPorpostaAtividadesFim" name="dataPorpostaAtividadesFim" class="form-control" value="{{ act1.dataPorpostaAtividadesFim|date:'Y-m-d' }}">
+            </div>
+        </div>
+
+        <label for="dataInscriçãoAtividades">Inscrições para as atividades</label>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="dataInscriçãoAtividadesInicio">Início</label>
+                <input type="date" id="dataInscriçãoAtividadesInicio" name="dataInscriçãoAtividadesInicio" class="form-control" value="{{ act1.dataInscriçãoAtividadesInicio|date:'Y-m-d' }}">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="dataInscriçãoAtividadesFim">Fim</label>
+                <input type="date" id="dataInscriçãoAtividadesFim" name="dataInscriçãoAtividadesFim" class="form-control" value="{{ act1.dataInscriçãoAtividadesFim|date:'Y-m-d' }}">
+            </div>
+        </div>
+        <label for="dataDiaAberto">Dia Aberto</label>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="dataDiaAbertoInicio">Início</label>
+                <input type="date" id="dataDiaAbertoInicio" name="dataDiaAbertoInicio" class="form-control" value="{{ act1.dataDiaAbertoInicio|date:'Y-m-d' }}">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="dataDiaAbertoFim">Fim</label>
+                <input type="date" id="dataDiaAbertoFim" name="dataDiaAbertoFim" class="form-control" value="{{ act1.dataDiaAbertoFim|date:'Y-m-d' }}">
+            </div>
+        </div>
+        <div class="form-row">
+            <label for="descrição">Descrição</label>
+            {{form.descrição}}
+        </div>

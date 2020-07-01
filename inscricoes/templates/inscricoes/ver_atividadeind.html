@@ -1,0 +1,74 @@
+{% extends 'configuracoes/base.html' %}
+
+{% block content %}
+
+<div class="main">
+  <nav class="breadcrumb" aria-label="breadcrumbs" style="background-color:#ffff">
+    <ul>
+      <li><a href="/inicial">Início</a></li>
+      <li><a href="../ver_atividades/">Atividades</a></li>
+      <li class="is-active"><a href="">{{a.Nome_actividade}}</a></li>
+    </ul>
+  </nav>
+  <div class="box">
+    <center>
+      <h2>Detalhes da Atividade</h2>
+    </center>
+    <hr>
+    <div class="form-row">
+      <div class="form-group col-md-4">
+        <center><label>Nome</label><br>
+            {{atividade.Nome_actividade}}</center>
+      </div>
+      <div class="form-group col-md-4">
+        <center><label>Criador</label><br>
+            {{atividade.Criador}}</center>
+      </div>
+      <div class="form-group col-md-4">
+        <center><label>Campus</label><br>
+            {{atividade.Campus}}</center>
+      </div>
+    </div>
+
+
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            <center><label>Tipo de Atividade</label><br>
+                {{atividade.Tipodeatividade}}</center>
+        </div>
+        <div class="form-group col-md-4">
+            <center><label>Departamento</label><br>
+                {{atividade.Departamento}}</center>
+        </div>
+        <div class="form-group col-md-4">
+            <center><label>Espaço</label><br>
+                {{sessao.Espaço}}</center>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            <center><label>Horario</label><br>
+          {{sessao.Inicio}}
+        </div>
+        <div class="form-group col-md-4">
+          <center><label>Duração (mins)</label><br>
+            {{sessao.Duraçao}}</center>
+        </div>
+        <div class="form-group col-md-4">
+            <center><label>Vagas</label><br>
+                {{sessao.Vagas}}</center>
+        </div>
+      </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-4"></div>
+        <div style="word-break: break-word" class="form-group col-md-4">
+          <center><label>Descrição</label><br>
+              {{atividade.Descrição}}</center>
+        </div>
+      </div></center>
+  </div>
+  <center><a button class="button is-medium is-link " style="text-align:right" type="button"  href="../ver_atividades">Voltar</button></a></center>
+</div>
+{% endblock %}
